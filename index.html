@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>🎃 Trick or Read！不讀書就搗蛋</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Noto+Sans+TC:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep: #1c0f2e;
+    --bg-deep-2: #150a24;
+    --card-purple: #341f52;
+    --card-purple-light: #43285f;
+    --accent-orange: #ff8a2b;
+    --accent-orange-dark: #e8600b;
+    --accent-yellow: #ffd23f;
+    --text-white: #fdf6ff;
+    --text-dim: #cbb8e0;
+    --success-green: #4ddb8f;
+    --danger-red: #ff6b6b;
+    --line: rgba(255,210,63,0.18);
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+
+  html,body{
+    margin:0; padding:0;
+    background:
+      radial-gradient(circle at 15% 8%, rgba(255,138,43,0.14), transparent 40%),
+      radial-gradient(circle at 85% 92%, rgba(77,219,143,0.08), transparent 45%),
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-deep-2) 100%);
+    color: var(--text-white);
+    font-family:'Noto Sans TC', -apple-system, sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  .display{ font-family:'Baloo 2','Noto Sans TC',sans-serif; }
+
+  /* ambient floaters */
+  .floaters{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+  .floaters span{
+    position:absolute; bottom:-10%; font-size:22px; opacity:0.25;
+    animation: rise linear infinite;
+  }
+  @keyframes rise{
+    0%{ transform: translateY(0) rotate(0deg); opacity:0; }
+    10%{ opacity:0.3; }
+    90%{ opacity:0.3; }
+    100%{ transform: translateY(-115vh) rotate(25deg); opacity:0; }
+  }
+
+  .app{ position:relative; z-index:1; max-width:520px; margin:0 auto; padding:20px 16px 60px; }
+
+  /* ---------- Header ---------- */
+  .site-header{ text-align:center; padding:18px 0 10px; }
+  .site-header h1{
+    font-family:'Baloo 2',sans-serif;
+    font-size:clamp(26px,7vw,34px);
+    font-weight:800;
+    margin:0 0 6px;
+    color: var(--accent-yellow);
+    text-shadow: 0 0 14px rgba(255,210,63,0.55), 0 0 2px rgba(255,138,43,0.6);
+    letter-spacing:0.5px;
+  }
+  .site-header p{ margin:0; color:var(--text-dim); font-size:14px; }
+
+  /* ---------- Card base ---------- */
+  .card{
+    background: linear-gradient(160deg, var(--card-purple-light), var(--card-purple));
+    border:2px solid var(--accent-orange);
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  /* ---------- Login ---------- */
+  #loginScreen{ margin-top:8vh; }
+  #loginScreen .pumpkin-hero{ text-align:center; font-size:64px; margin-bottom:6px; filter: drop-shadow(0 0 16px rgba(255,138,43,0.6)); animation: flicker 3s ease-in-out infinite; }
+  @keyframes flicker{ 0%,100%{opacity:1;} 50%{opacity:0.82;} }
+  #loginScreen h2{ text-align:center; font-family:'Baloo 2'; color:var(--accent-yellow); font-size:20px; margin:6px 0 18px; }
+  #loginScreen input{
+    width:100%; padding:14px 16px; border-radius:12px; border:2px solid var(--line);
+    background: rgba(0,0,0,0.25); color:var(--text-white); font-size:16px; margin-bottom:14px;
+    font-family:'Noto Sans TC',sans-serif;
+  }
+  #loginScreen input::placeholder{ color: rgba(253,246,255,0.4); }
+  #loginScreen input:focus{ outline:3px solid var(--accent-yellow); outline-offset:1px; }
+
+  .btn{
+    display:block; width:100%; padding:14px; border:none; border-radius:12px;
+    background: linear-gradient(135deg, var(--accent-orange), var(--accent-orange-dark));
+    color:#fff; font-family:'Baloo 2'; font-size:17px; font-weight:700;
+    cursor:pointer; box-shadow:0 4px 0 rgba(150,60,0,0.5);
+    transition: transform .08s ease;
+  }
+  .btn:active{ transform: translateY(3px); box-shadow:0 1px 0 rgba(150,60,0,0.5); }
+  .btn:focus-visible{ outline:3px solid var(--accent-yellow); outline-offset:2px; }
+  .btn.secondary{ background: transparent; border:2px solid var(--accent-orange); box-shadow:none; color:var(--accent-yellow); }
+  .btn.small{ width:auto; padding:10px 18px; font-size:14px; }
+  .btn:disabled{ opacity:0.45; cursor:not-allowed; }
+
+  /* ---------- Dashboard ---------- */
+  #dashboard .hello{ font-size:14px; color:var(--text-dim); margin:0 0 12px; text-align:center;}
+  #dashboard .hello b{ color:var(--accent-yellow); }
+
+  .bucket-wrap{ display:flex; justify-content:center; margin-bottom:14px; }
+
+  .stat-row{ display:flex; gap:12px; margin-bottom:14px; }
+  .stat-box{
+    flex:1; text-align:center; background: rgba(0,0,0,0.22);
+    border:1px solid var(--line); border-radius:14px; padding:12px 8px;
+  }
+  .stat-box .label{ font-size:12px; color:var(--text-dim); margin-bottom:4px; }
+  .stat-box .value{ font-family:'Baloo 2'; font-size:22px; color:var(--accent-yellow); font-weight:700; }
+  .stat-box.done .value{ color: var(--success-green); }
+
+  .overall-bar-track{ height:14px; border-radius:999px; background:rgba(0,0,0,0.35); overflow:hidden; border:1px solid var(--line); }
+  .overall-bar-fill{ height:100%; border-radius:999px; background: linear-gradient(90deg, var(--accent-orange), var(--accent-yellow)); transition: width .5s ease; }
+  .overall-label{ text-align:center; font-size:12px; color:var(--text-dim); margin-top:6px; }
+
+  /* ---------- Section headers ---------- */
+  .section-title{ display:flex; align-items:center; gap:8px; margin: 24px 0 12px; }
+  .section-title .icon{ font-size:22px; }
+  .section-title h3{ font-family:'Baloo 2'; margin:0; font-size:18px; color:var(--accent-yellow); }
+  .section-title .sub{ font-size:12px; color:var(--text-dim); margin-left:auto; }
+
+  /* ---------- Quiz ---------- */
+  .quiz-item{
+    background: rgba(0,0,0,0.22); border:1px solid var(--line); border-radius:14px;
+    margin-bottom:10px; overflow:hidden;
+  }
+  .quiz-item.correct{ border-color: var(--success-green); background: rgba(77,219,143,0.09); }
+  .quiz-q{
+    display:flex; align-items:center; gap:10px; padding:14px; cursor:pointer; font-size:15px; font-weight:600;
+  }
+  .quiz-q .num{
+    flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--accent-orange);
+    color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-family:'Baloo 2';
+  }
+  .quiz-item.correct .num{ background: var(--success-green); }
+  .quiz-q .check{ margin-left:auto; font-size:18px; }
+  .quiz-body{ max-height:0; overflow:hidden; transition: max-height .3s ease; padding:0 14px; }
+  .quiz-item.open .quiz-body{ max-height:400px; padding:0 14px 14px; }
+  .option{
+    display:flex; align-items:center; gap:10px; padding:10px 12px; margin-bottom:8px;
+    background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:10px; cursor:pointer; font-size:14px;
+  }
+  .option.selected{ border-color:var(--accent-yellow); background:rgba(255,210,63,0.12); }
+  .option input{ accent-color:var(--accent-orange); width:16px; height:16px; }
+  .quiz-feedback{ font-size:13px; margin:6px 0 8px; min-height:16px; }
+  .quiz-feedback.wrong{ color:var(--danger-red); }
+  .quiz-feedback.right{ color:var(--success-green); }
+
+  /* ---------- Action tasks ---------- */
+  .action-grid{ display:flex; flex-direction:column; gap:10px; }
+  .action-card{
+    display:flex; align-items:center; gap:12px;
+    background: rgba(0,0,0,0.22); border:1px solid var(--line); border-radius:14px; padding:13px 14px;
+    cursor:pointer;
+  }
+  .action-card.done{ border-color: var(--success-green); background: rgba(77,219,143,0.09); cursor:default; }
+  .action-card .emoji{ font-size:24px; flex-shrink:0; }
+  .action-card .txt{ font-size:14px; flex:1; line-height:1.4; }
+  .action-card .mark{ font-size:20px; flex-shrink:0; }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(10,4,20,0.72); backdrop-filter: blur(3px);
+    display:flex; align-items:center; justify-content:center; z-index:50; padding:20px;
+  }
+  .modal-overlay.hidden{ display:none; }
+  .modal-box{
+    background: linear-gradient(160deg, var(--card-purple-light), var(--card-purple));
+    border:2px solid var(--accent-orange); border-radius:18px; padding:24px; max-width:380px; width:100%;
+    text-align:center;
+  }
+  .modal-box .emoji-top{ font-size:40px; margin-bottom:8px; }
+  .modal-box h3{ font-family:'Baloo 2'; color:var(--accent-yellow); margin:0 0 8px; font-size:19px; }
+  .modal-box p{ color:var(--text-dim); font-size:13px; margin:0 0 16px; line-height:1.5; }
+  .modal-box input{
+    width:100%; padding:13px; border-radius:10px; border:2px solid var(--line); background:rgba(0,0,0,0.3);
+    color:var(--text-white); font-size:18px; text-align:center; letter-spacing:4px; margin-bottom:10px;
+  }
+  .modal-box input:focus{ outline:3px solid var(--accent-yellow); }
+  .modal-error{ color:var(--danger-red); font-size:13px; min-height:18px; margin-bottom:8px; }
+  .modal-btn-row{ display:flex; gap:10px; margin-top:6px; }
+
+  /* ---------- Celebration ---------- */
+  #celebrateModal .modal-box{ max-width:400px; position:relative; overflow:hidden; }
+  .confetti{ position:absolute; top:-20px; font-size:20px; animation: fall linear forwards; }
+  @keyframes fall{ to{ transform: translateY(480px) rotate(360deg); opacity:0; } }
+  .celebrate-msg{ font-size:15px; color:var(--text-white); font-weight:600; line-height:1.7; margin:10px 0 18px; position:relative; z-index:2; }
+  .claim-zone{ margin-top:16px; border-top:1px dashed var(--line); padding-top:14px; position:relative; z-index:2; }
+  .claim-zone .staff-note{ font-size:11px; color:var(--text-dim); margin-bottom:10px; }
+
+  /* ---------- Claimed lock screen ---------- */
+  #claimedScreen{ margin-top:14vh; text-align:center; }
+  #claimedScreen .big-emoji{ font-size:70px; margin-bottom:10px; }
+  #claimedScreen h2{ font-family:'Baloo 2'; color:var(--accent-yellow); font-size:22px; margin:0 0 10px; }
+  #claimedScreen p{ color:var(--text-dim); font-size:14px; line-height:1.6; }
+
+  footer.hint{ text-align:center; font-size:11px; color:rgba(203,184,224,0.5); margin-top:30px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  .hidden{ display:none !important; }
+</style>
+</head>
+<body>
+
+<div class="floaters" id="floaters"></div>
+
+<div class="app">
+
+  <div class="site-header">
+    <h1>🎃 Trick or Read！</h1>
+    <p>不讀書就搗蛋 — 圖書館萬聖挑戰</p>
+  </div>
+
+  <!-- ================= LOGIN ================= -->
+  <div id="loginScreen">
+    <div class="card">
+      <div class="pumpkin-hero">🎃</div>
+      <h2>搗蛋鬼在圖書館出沒了！<br>快來討書吃 👻</h2>
+      <input type="text" id="nicknameInput" placeholder="輸入你的暱稱開始挑戰" maxlength="12">
+      <button class="btn" id="startBtn">開始挑戰 🍬</button>
+    </div>
+  </div>
+
+  <!-- ================= CLAIMED LOCK SCREEN ================= -->
+  <div id="claimedScreen" class="hidden">
+    <div class="card">
+      <div class="big-emoji">🎉</div>
+      <h2>您已完成領獎，<br>感謝參與萬聖節活動！</h2>
+      <p id="claimedName"></p>
+      <p>期待下次萬聖節再見 🦇🎃</p>
+    </div>
+  </div>
+
+  <!-- ================= MAIN ================= -->
+  <div id="mainScreen" class="hidden">
+
+    <div class="card" id="dashboard">
+      <p class="hello">哈囉，<b id="helloName"></b>！繼續你的萬聖大冒險 🔮</p>
+
+      <div class="bucket-wrap">
+        <svg id="bucketSvg" width="180" height="150" viewBox="0 0 180 150"></svg>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-box" id="quizStatBox">
+          <div class="label">📚 問答大考驗</div>
+          <div class="value"><span id="quizDoneNum">0</span> / 5</div>
+        </div>
+        <div class="stat-box" id="actionStatBox">
+          <div class="label">🎃 搗蛋行動任務</div>
+          <div class="value"><span id="actionDoneNum">0</span> / 3</div>
+        </div>
+      </div>
+
+      <div class="overall-bar-track"><div class="overall-bar-fill" id="overallBarFill" style="width:0%"></div></div>
+      <div class="overall-label" id="overallLabel">總進度 0 / 8</div>
+    </div>
+
+    <div class="section-title">
+      <span class="icon">🔮</span><h3>智慧大考驗</h3><span class="sub">5 題全對過關</span>
+    </div>
+    <div id="quizList"></div>
+
+    <div class="section-title">
+      <span class="icon">👻</span><h3>搗蛋行動任務</h3><span class="sub">任選 3 項完成</span>
+    </div>
+    <div class="action-grid" id="actionList"></div>
+
+    <footer class="hint">完成 5 題問答 + 3 項行動任務，即可領取萬聖節小禮物（每人限領取一次）！</footer>
+  </div>
+
+</div>
+
+<!-- ============ Action Password Modal ============ -->
+<div class="modal-overlay hidden" id="actionModal">
+  <div class="modal-box">
+    <div class="emoji-top">🧾</div>
+    <h3>請出示任務憑證</h3>
+    <p>請向櫃檯館員出示借閱憑證或實體任務結果，由館員輸入通關密碼以完成這項搗蛋行動。</p>
+    <input type="password" inputmode="numeric" id="actionPwInput" placeholder="••••" maxlength="6">
+    <div class="modal-error" id="actionPwError"></div>
+    <div class="modal-btn-row">
+      <button class="btn secondary" id="actionCancelBtn">取消</button>
+      <button class="btn" id="actionConfirmBtn">確認</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Celebration Modal ============ -->
+<div class="modal-overlay hidden" id="celebrateModal">
+  <div class="modal-box" id="celebrateBox">
+    <div class="emoji-top">🎉🎃🎉</div>
+    <h3>挑戰通關！</h3>
+    <p class="celebrate-msg">🎃 恭喜完成萬聖節挑戰，請出示此畫面給櫃檯館員領取萬聖節小禮物！</p>
+
+    <div class="claim-zone" id="claimZone">
+      <button class="btn" id="showClaimBtn">館員確認發放禮物</button>
+      <div id="claimForm" class="hidden" style="margin-top:12px;">
+        <p class="staff-note">館員專用：請輸入通關密碼確認已發放禮物，此動作將永久鎖定此帳號。</p>
+        <input type="password" inputmode="numeric" id="claimPwInput" placeholder="輸入通關密碼" maxlength="6">
+        <div class="modal-error" id="claimPwError"></div>
+        <button class="btn" id="claimConfirmBtn">確認發放並鎖定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORAGE_KEY = "trickOrRead_v2";
+  var PASSWORD = "8888";
+
+  var ACTION_TASKS = [
+    { id:"a1", emoji:"📗", text:"當日自助借三本一般圖書" },
+    { id:"a2", emoji:"🛟", text:"當日自助借三本浮動館藏" },
+    { id:"a3", emoji:"📀", text:"當日自助借三片視聽資料" },
+    { id:"a4", emoji:"🧑‍🎓", text:"當日自助借一本青少年圖書" },
+    { id:"a5", emoji:"🎃", text:"利用館藏查詢系統查詢萬聖節圖書，並找到貼有「南瓜鬼貼紙」的實體書籍！" },
+    { id:"a6", emoji:"📦", text:"成功自助取預約書一次" },
+    { id:"a7", emoji:"📱", text:"成功利用手機 app 借書功能借閱 1 本書" },
+    { id:"a8", emoji:"💻", text:"成功搜尋一本電子書" }
+  ];
+
+  var QUIZ_BANK = [
+    { id:"q1", text:"個人證一次最多可以借幾本書？", options:["15本","20本","25本"], answer:2 },
+    { id:"q2", text:"熱門書借閱期限是多久？", options:["7天","14天","30天"], answer:1 },
+    { id:"q3", text:"一個人最多可以同時預約幾本書？", options:["5本","7本","10本"], answer:1 },
+    { id:"q4", text:"家庭證一次最多可以借幾本書？", options:["30本","40本","50本"], answer:1 },
+    { id:"q5", text:"還書過期的話可以利用閱讀存摺點數折抵嗎？", options:["可以","不行"], answer:0 },
+    { id:"q6", text:"借閱證期限是多久？", options:["3年","5年","6年"], answer:2 },
+    { id:"q7", text:"我想預約書，可是後面已經有人預約還可以續借嗎？", options:["可以","不行"], answer:1 },
+    { id:"q8", text:"續借圖書最多可以續借幾次？", options:["1次","2次","3次"], answer:2 },
+    { id:"q9", text:"非熱門書的話，一次借閱期限是多久？", options:["14天","30天","60天"], answer:1 },
+    { id:"q10", text:"視聽資料借閱期限是多久？", options:["7天","14天","30天"], answer:1 },
+    { id:"q11", text:"南港分館的館藏特色是甚麼？", options:["鐵道文化","原住民文化","綠建築"], answer:1 }
+  ];
+
+  var state = null;
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){ return null; }
+  }
+
+  function saveState(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function createNewState(nickname){
+    var picked = shuffle(QUIZ_BANK).slice(0, 5);
+    var quiz = picked.map(function(q){
+      return { id:q.id, text:q.text, options:q.options, answer:q.answer, selected:null, correct:false, open:false };
+    });
+    var actions = {};
+    ACTION_TASKS.forEach(function(t){ actions[t.id] = false; });
+    return { nickname: nickname, quiz: quiz, actions: actions, claimed: false };
+  }
+
+  // ---------- ambient floaters ----------
+  function initFloaters(){
+    var wrap = document.getElementById("floaters");
+    var icons = ["🦇","👻","🕸️","🎃","🔮"];
+    for (var i=0;i<10;i++){
+      var s = document.createElement("span");
+      s.textContent = icons[Math.floor(Math.random()*icons.length)];
+      s.style.left = Math.random()*100 + "%";
+      s.style.fontSize = (16 + Math.random()*18) + "px";
+      s.style.animationDuration = (14 + Math.random()*12) + "s";
+      s.style.animationDelay = (Math.random()*14) + "s";
+      wrap.appendChild(s);
+    }
+  }
+
+  // ---------- bucket svg (signature progress element) ----------
+  function renderBucket(){
+    var quizDone = state.quiz.filter(function(q){return q.correct;}).length;
+    var actionDone = Object.keys(state.actions).filter(function(k){return state.actions[k];}).length;
+    var total = quizDone + actionDone; // out of 8
+
+    var svg = document.getElementById("bucketSvg");
+    var slots = [];
+    var positions = [
+      [30,40],[55,25],[85,18],[115,18],[145,25],[150,55],[125,72],[35,72]
+    ];
+    for (var i=0;i<8;i++){
+      var filled = i < total;
+      var isQuizCandy = i < 5;
+      var color = filled ? (isQuizCandy ? "#ffd23f" : "#4ddb8f") : "rgba(255,255,255,0.12)";
+      var stroke = filled ? "#e8600b" : "rgba(255,255,255,0.2)";
+      slots.push('<circle cx="'+positions[i][0]+'" cy="'+positions[i][1]+'" r="9" fill="'+color+'" stroke="'+stroke+'" stroke-width="2"></circle>');
+    }
+
+    var html =
+      '<g>' + slots.join("") + '</g>' +
+      '<path d="M25 70 Q90 60 155 70 L148 138 Q90 150 32 138 Z" fill="#ff8a2b" stroke="#e8600b" stroke-width="3"/>' +
+      '<path d="M25 70 Q90 58 155 70 L155 82 Q90 70 25 82 Z" fill="#e8600b"/>' +
+      '<polygon points="65,95 75,110 60,110" fill="#341f52"/>' +
+      '<polygon points="115,95 125,110 110,110" fill="#341f52"/>' +
+      '<path d="M62 120 Q90 132 118 120 L112 126 Q90 136 68 126 Z" fill="#341f52"/>' +
+      '<rect x="82" y="8" width="16" height="10" rx="2" fill="#7a4a25"/>';
+    svg.innerHTML = html;
+  }
+
+  // ---------- render dashboard ----------
+  function renderDashboard(){
+    var quizDone = state.quiz.filter(function(q){return q.correct;}).length;
+    var actionDone = Object.keys(state.actions).filter(function(k){return state.actions[k];}).length;
+
+    document.getElementById("helloName").textContent = state.nickname;
+    document.getElementById("quizDoneNum").textContent = quizDone;
+    document.getElementById("actionDoneNum").textContent = actionDone;
+
+    document.getElementById("quizStatBox").classList.toggle("done", quizDone >= 5);
+    document.getElementById("actionStatBox").classList.toggle("done", actionDone >= 3);
+
+    var total = quizDone + actionDone;
+    var pct = Math.round((total/8)*100);
+    document.getElementById("overallBarFill").style.width = pct + "%";
+    document.getElementById("overallLabel").textContent = "總進度 " + total + " / 8";
+
+    renderBucket();
+  }
+
+  // ---------- render quiz ----------
+  function renderQuiz(){
+    var list = document.getElementById("quizList");
+    list.innerHTML = "";
+    state.quiz.forEach(function(q, idx){
+      var item = document.createElement("div");
+      item.className = "quiz-item" + (q.correct ? " correct" : "") + (q.open ? " open" : "");
+
+      var qHead = document.createElement("div");
+      qHead.className = "quiz-q";
+      qHead.innerHTML =
+        '<span class="num">'+(idx+1)+'</span>' +
+        '<span style="flex:1;">'+ escapeHtml(q.text) +'</span>' +
+        '<span class="check">'+ (q.correct ? "✅" : "▾") +'</span>';
+      qHead.addEventListener("click", function(){
+        if (q.correct) return;
+        q.open = !q.open;
+        renderQuiz();
+      });
+
+      var body = document.createElement("div");
+      body.className = "quiz-body";
+
+      var feedback = document.createElement("div");
+      feedback.className = "quiz-feedback";
+
+      q.options.forEach(function(optText, optIdx){
+        var opt = document.createElement("div");
+        opt.className = "option" + (q.selected === optIdx ? " selected" : "");
+        opt.innerHTML =
+          '<input type="radio" name="'+q.id+'" '+(q.selected===optIdx?"checked":"")+' '+(q.correct?"disabled":"")+'>' +
+          '<span>'+ escapeHtml(optText) +'</span>';
+        opt.addEventListener("click", function(){
+          if (q.correct) return;
+          q.selected = optIdx;
+          renderQuiz();
+        });
+        body.appendChild(opt);
+      });
+
+      body.appendChild(feedback);
+
+      if (!q.correct){
+        var submitBtn = document.createElement("button");
+        submitBtn.className = "btn small";
+        submitBtn.textContent = "送出答案";
+        submitBtn.style.marginTop = "4px";
+        submitBtn.addEventListener("click", function(){
+          if (q.selected === null || q.selected === undefined){
+            feedback.textContent = "請先選擇一個答案喔！";
+            feedback.className = "quiz-feedback wrong";
+            return;
+          }
+          if (q.selected === q.answer){
+            q.correct = true;
+            q.open = true;
+            saveState();
+            renderQuiz();
+            renderDashboard();
+            checkWin();
+          } else {
+            feedback.textContent = "答案不對喔，再試一次！";
+            feedback.className = "quiz-feedback wrong";
+          }
+        });
+        body.appendChild(submitBtn);
+      }
+
+      item.appendChild(qHead);
+      item.appendChild(body);
+      list.appendChild(item);
+    });
+  }
+
+  // ---------- render actions ----------
+  var pendingActionId = null;
+
+  function renderActions(){
+    var list = document.getElementById("actionList");
+    list.innerHTML = "";
+    ACTION_TASKS.forEach(function(t){
+      var done = state.actions[t.id];
+      var card = document.createElement("div");
+      card.className = "action-card" + (done ? " done" : "");
+      card.innerHTML =
+        '<span class="emoji">'+t.emoji+'</span>' +
+        '<span class="txt">'+ escapeHtml(t.text) +'</span>' +
+        '<span class="mark">'+ (done ? "✅" : "👉") +'</span>';
+      if (!done){
+        card.addEventListener("click", function(){
+          openActionModal(t.id);
+        });
+      }
+      list.appendChild(card);
+    });
+  }
+
+  function openActionModal(taskId){
+    pendingActionId = taskId;
+    document.getElementById("actionPwInput").value = "";
+    document.getElementById("actionPwError").textContent = "";
+    document.getElementById("actionModal").classList.remove("hidden");
+    document.getElementById("actionPwInput").focus();
+  }
+
+  function closeActionModal(){
+    pendingActionId = null;
+    document.getElementById("actionModal").classList.add("hidden");
+  }
+
+  // ---------- win check ----------
+  function checkWin(){
+    if (state.claimed) return;
+    var quizDone = state.quiz.filter(function(q){return q.correct;}).length;
+    var actionDone = Object.keys(state.actions).filter(function(k){return state.actions[k];}).length;
+    if (quizDone >= 5 && actionDone >= 3){
+      showCelebration();
+    }
+  }
+
+  function showCelebration(){
+    var modal = document.getElementById("celebrateModal");
+    modal.classList.remove("hidden");
+    document.getElementById("claimForm").classList.add("hidden");
+    document.getElementById("claimPwInput").value = "";
+    document.getElementById("claimPwError").textContent = "";
+    document.getElementById("showClaimBtn").classList.remove("hidden");
+    spawnConfetti();
+  }
+
+  function spawnConfetti(){
+    var box = document.getElementById("celebrateBox");
+    var old = box.querySelectorAll(".confetti");
+    old.forEach(function(el){ el.remove(); });
+    var icons = ["🎃","🍬","🍭","👻","🦇","⭐"];
+    for (var i=0;i<18;i++){
+      var c = document.createElement("span");
+      c.className = "confetti";
+      c.textContent = icons[Math.floor(Math.random()*icons.length)];
+      c.style.left = Math.random()*95 + "%";
+      c.style.animationDuration = (1.6 + Math.random()*1.4) + "s";
+      c.style.animationDelay = (Math.random()*0.8) + "s";
+      box.appendChild(c);
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, function(m){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m];
+    });
+  }
+
+  // ---------- screen switching ----------
+  function showLogin(){
+    document.getElementById("loginScreen").classList.remove("hidden");
+    document.getElementById("mainScreen").classList.add("hidden");
+    document.getElementById("claimedScreen").classList.add("hidden");
+  }
+
+  function showMain(){
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("claimedScreen").classList.add("hidden");
+    document.getElementById("mainScreen").classList.remove("hidden");
+    renderDashboard();
+    renderQuiz();
+    renderActions();
+  }
+
+  function showClaimedLock(){
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("mainScreen").classList.add("hidden");
+    document.getElementById("celebrateModal").classList.add("hidden");
+    document.getElementById("claimedScreen").classList.remove("hidden");
+    document.getElementById("claimedName").textContent = state && state.nickname ? (state.nickname + "，你的禮物已經領取囉～") : "";
+  }
+
+  // ---------- init ----------
+  function init(){
+    initFloaters();
+    var saved = loadState();
+    if (saved && saved.nickname){
+      state = saved;
+      if (state.claimed){
+        showClaimedLock();
+      } else {
+        showMain();
+        checkWin();
+      }
+    } else {
+      showLogin();
+    }
+  }
+
+  document.getElementById("startBtn").addEventListener("click", function(){
+    var val = document.getElementById("nicknameInput").value.trim();
+    if (!val){
+      document.getElementById("nicknameInput").focus();
+      document.getElementById("nicknameInput").style.borderColor = "var(--danger-red)";
+      return;
+    }
+    state = createNewState(val);
+    saveState();
+    showMain();
+  });
+
+  document.getElementById("nicknameInput").addEventListener("keydown", function(e){
+    if (e.key === "Enter") document.getElementById("startBtn").click();
+  });
+
+  document.getElementById("actionCancelBtn").addEventListener("click", closeActionModal);
+
+  document.getElementById("actionConfirmBtn").addEventListener("click", function(){
+    var val = document.getElementById("actionPwInput").value.trim();
+    if (val !== PASSWORD){
+      document.getElementById("actionPwError").textContent = "密碼不正確，請洽詢櫃檯館員。";
+      return;
+    }
+    if (pendingActionId){
+      state.actions[pendingActionId] = true;
+      saveState();
+      renderActions();
+      renderDashboard();
+      closeActionModal();
+      checkWin();
+    }
+  });
+
+  document.getElementById("actionPwInput").addEventListener("keydown", function(e){
+    if (e.key === "Enter") document.getElementById("actionConfirmBtn").click();
+  });
+
+  document.getElementById("showClaimBtn").addEventListener("click", function(){
+    document.getElementById("claimForm").classList.remove("hidden");
+    document.getElementById("showClaimBtn").classList.add("hidden");
+    document.getElementById("claimPwInput").focus();
+  });
+
+  document.getElementById("claimConfirmBtn").addEventListener("click", function(){
+    var val = document.getElementById("claimPwInput").value.trim();
+    if (val !== PASSWORD){
+      document.getElementById("claimPwError").textContent = "密碼不正確，請洽詢櫃檯館員。";
+      return;
+    }
+    state.claimed = true;
+    saveState();
+    showClaimedLock();
+  });
+
+  document.getElementById("claimPwInput").addEventListener("keydown", function(e){
+    if (e.key === "Enter") document.getElementById("claimConfirmBtn").click();
+  });
+
+  init();
+})();
+</script>
+
+</body>
+</html>
