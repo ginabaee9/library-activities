@@ -2,705 +2,294 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>🎃 Trick or Read！不讀書就搗蛋</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Noto+Sans+TC:wght@400;600;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trick or Read！不讀書就搗蛋｜南港分館</title>
 <style>
-  :root{
-    --bg-deep: #1c0f2e;
-    --bg-deep-2: #150a24;
-    --card-purple: #341f52;
-    --card-purple-light: #43285f;
-    --accent-orange: #ff8a2b;
-    --accent-orange-dark: #e8600b;
-    --accent-yellow: #ffd23f;
-    --text-white: #fdf6ff;
-    --text-dim: #cbb8e0;
-    --success-green: #4ddb8f;
-    --danger-red: #ff6b6b;
-    --line: rgba(255,210,63,0.18);
-  }
-
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-
-  html,body{
-    margin:0; padding:0;
-    background:
-      radial-gradient(circle at 15% 8%, rgba(255,138,43,0.14), transparent 40%),
-      radial-gradient(circle at 85% 92%, rgba(77,219,143,0.08), transparent 45%),
-      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-deep-2) 100%);
-    color: var(--text-white);
-    font-family:'Noto Sans TC', -apple-system, sans-serif;
-    min-height:100vh;
-    overflow-x:hidden;
-  }
-
-  .display{ font-family:'Baloo 2','Noto Sans TC',sans-serif; }
-
-  /* ambient floaters */
-  .floaters{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
-  .floaters span{
-    position:absolute; bottom:-10%; font-size:22px; opacity:0.25;
-    animation: rise linear infinite;
-  }
-  @keyframes rise{
-    0%{ transform: translateY(0) rotate(0deg); opacity:0; }
-    10%{ opacity:0.3; }
-    90%{ opacity:0.3; }
-    100%{ transform: translateY(-115vh) rotate(25deg); opacity:0; }
-  }
-
-  .app{ position:relative; z-index:1; max-width:520px; margin:0 auto; padding:20px 16px 60px; }
-
-  /* ---------- Header ---------- */
-  .site-header{ text-align:center; padding:18px 0 10px; }
-  .site-header h1{
-    font-family:'Baloo 2',sans-serif;
-    font-size:clamp(26px,7vw,34px);
-    font-weight:800;
-    margin:0 0 6px;
-    color: var(--accent-yellow);
-    text-shadow: 0 0 14px rgba(255,210,63,0.55), 0 0 2px rgba(255,138,43,0.6);
-    letter-spacing:0.5px;
-  }
-  .site-header p{ margin:0; color:var(--text-dim); font-size:14px; }
-
-  /* ---------- Card base ---------- */
-  .card{
-    background: linear-gradient(160deg, var(--card-purple-light), var(--card-purple));
-    border:2px solid var(--accent-orange);
-    border-radius:18px;
-    padding:20px;
-    margin-bottom:18px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
-  }
-
-  /* ---------- Login ---------- */
-  #loginScreen{ margin-top:8vh; }
-  #loginScreen .pumpkin-hero{ text-align:center; font-size:64px; margin-bottom:6px; filter: drop-shadow(0 0 16px rgba(255,138,43,0.6)); animation: flicker 3s ease-in-out infinite; }
-  @keyframes flicker{ 0%,100%{opacity:1;} 50%{opacity:0.82;} }
-  #loginScreen h2{ text-align:center; font-family:'Baloo 2'; color:var(--accent-yellow); font-size:20px; margin:6px 0 18px; }
-  #loginScreen input{
-    width:100%; padding:14px 16px; border-radius:12px; border:2px solid var(--line);
-    background: rgba(0,0,0,0.25); color:var(--text-white); font-size:16px; margin-bottom:14px;
-    font-family:'Noto Sans TC',sans-serif;
-  }
-  #loginScreen input::placeholder{ color: rgba(253,246,255,0.4); }
-  #loginScreen input:focus{ outline:3px solid var(--accent-yellow); outline-offset:1px; }
-
-  .btn{
-    display:block; width:100%; padding:14px; border:none; border-radius:12px;
-    background: linear-gradient(135deg, var(--accent-orange), var(--accent-orange-dark));
-    color:#fff; font-family:'Baloo 2'; font-size:17px; font-weight:700;
-    cursor:pointer; box-shadow:0 4px 0 rgba(150,60,0,0.5);
-    transition: transform .08s ease;
-  }
-  .btn:active{ transform: translateY(3px); box-shadow:0 1px 0 rgba(150,60,0,0.5); }
-  .btn:focus-visible{ outline:3px solid var(--accent-yellow); outline-offset:2px; }
-  .btn.secondary{ background: transparent; border:2px solid var(--accent-orange); box-shadow:none; color:var(--accent-yellow); }
-  .btn.small{ width:auto; padding:10px 18px; font-size:14px; }
-  .btn:disabled{ opacity:0.45; cursor:not-allowed; }
-
-  /* ---------- Dashboard ---------- */
-  #dashboard .hello{ font-size:14px; color:var(--text-dim); margin:0 0 12px; text-align:center;}
-  #dashboard .hello b{ color:var(--accent-yellow); }
-
-  .bucket-wrap{ display:flex; justify-content:center; margin-bottom:14px; }
-
-  .stat-row{ display:flex; gap:12px; margin-bottom:14px; }
-  .stat-box{
-    flex:1; text-align:center; background: rgba(0,0,0,0.22);
-    border:1px solid var(--line); border-radius:14px; padding:12px 8px;
-  }
-  .stat-box .label{ font-size:12px; color:var(--text-dim); margin-bottom:4px; }
-  .stat-box .value{ font-family:'Baloo 2'; font-size:22px; color:var(--accent-yellow); font-weight:700; }
-  .stat-box.done .value{ color: var(--success-green); }
-
-  .overall-bar-track{ height:14px; border-radius:999px; background:rgba(0,0,0,0.35); overflow:hidden; border:1px solid var(--line); }
-  .overall-bar-fill{ height:100%; border-radius:999px; background: linear-gradient(90deg, var(--accent-orange), var(--accent-yellow)); transition: width .5s ease; }
-  .overall-label{ text-align:center; font-size:12px; color:var(--text-dim); margin-top:6px; }
-
-  /* ---------- Section headers ---------- */
-  .section-title{ display:flex; align-items:center; gap:8px; margin: 24px 0 12px; }
-  .section-title .icon{ font-size:22px; }
-  .section-title h3{ font-family:'Baloo 2'; margin:0; font-size:18px; color:var(--accent-yellow); }
-  .section-title .sub{ font-size:12px; color:var(--text-dim); margin-left:auto; }
-
-  /* ---------- Quiz ---------- */
-  .quiz-item{
-    background: rgba(0,0,0,0.22); border:1px solid var(--line); border-radius:14px;
-    margin-bottom:10px; overflow:hidden;
-  }
-  .quiz-item.correct{ border-color: var(--success-green); background: rgba(77,219,143,0.09); }
-  .quiz-q{
-    display:flex; align-items:center; gap:10px; padding:14px; cursor:pointer; font-size:15px; font-weight:600;
-  }
-  .quiz-q .num{
-    flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--accent-orange);
-    color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-family:'Baloo 2';
-  }
-  .quiz-item.correct .num{ background: var(--success-green); }
-  .quiz-q .check{ margin-left:auto; font-size:18px; }
-  .quiz-body{ max-height:0; overflow:hidden; transition: max-height .3s ease; padding:0 14px; }
-  .quiz-item.open .quiz-body{ max-height:400px; padding:0 14px 14px; }
-  .option{
-    display:flex; align-items:center; gap:10px; padding:10px 12px; margin-bottom:8px;
-    background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:10px; cursor:pointer; font-size:14px;
-  }
-  .option.selected{ border-color:var(--accent-yellow); background:rgba(255,210,63,0.12); }
-  .option input{ accent-color:var(--accent-orange); width:16px; height:16px; }
-  .quiz-feedback{ font-size:13px; margin:6px 0 8px; min-height:16px; }
-  .quiz-feedback.wrong{ color:var(--danger-red); }
-  .quiz-feedback.right{ color:var(--success-green); }
-
-  /* ---------- Action tasks ---------- */
-  .action-grid{ display:flex; flex-direction:column; gap:10px; }
-  .action-card{
-    display:flex; align-items:center; gap:12px;
-    background: rgba(0,0,0,0.22); border:1px solid var(--line); border-radius:14px; padding:13px 14px;
-    cursor:pointer;
-  }
-  .action-card.done{ border-color: var(--success-green); background: rgba(77,219,143,0.09); cursor:default; }
-  .action-card .emoji{ font-size:24px; flex-shrink:0; }
-  .action-card .txt{ font-size:14px; flex:1; line-height:1.4; }
-  .action-card .mark{ font-size:20px; flex-shrink:0; }
-
-  /* ---------- Modal ---------- */
-  .modal-overlay{
-    position:fixed; inset:0; background:rgba(10,4,20,0.72); backdrop-filter: blur(3px);
-    display:flex; align-items:center; justify-content:center; z-index:50; padding:20px;
-  }
-  .modal-overlay.hidden{ display:none; }
-  .modal-box{
-    background: linear-gradient(160deg, var(--card-purple-light), var(--card-purple));
-    border:2px solid var(--accent-orange); border-radius:18px; padding:24px; max-width:380px; width:100%;
-    text-align:center;
-  }
-  .modal-box .emoji-top{ font-size:40px; margin-bottom:8px; }
-  .modal-box h3{ font-family:'Baloo 2'; color:var(--accent-yellow); margin:0 0 8px; font-size:19px; }
-  .modal-box p{ color:var(--text-dim); font-size:13px; margin:0 0 16px; line-height:1.5; }
-  .modal-box input{
-    width:100%; padding:13px; border-radius:10px; border:2px solid var(--line); background:rgba(0,0,0,0.3);
-    color:var(--text-white); font-size:18px; text-align:center; letter-spacing:4px; margin-bottom:10px;
-  }
-  .modal-box input:focus{ outline:3px solid var(--accent-yellow); }
-  .modal-error{ color:var(--danger-red); font-size:13px; min-height:18px; margin-bottom:8px; }
-  .modal-btn-row{ display:flex; gap:10px; margin-top:6px; }
-
-  /* ---------- Celebration ---------- */
-  #celebrateModal .modal-box{ max-width:400px; position:relative; overflow:hidden; }
-  .confetti{ position:absolute; top:-20px; font-size:20px; animation: fall linear forwards; }
-  @keyframes fall{ to{ transform: translateY(480px) rotate(360deg); opacity:0; } }
-  .celebrate-msg{ font-size:15px; color:var(--text-white); font-weight:600; line-height:1.7; margin:10px 0 18px; position:relative; z-index:2; }
-  .claim-zone{ margin-top:16px; border-top:1px dashed var(--line); padding-top:14px; position:relative; z-index:2; }
-  .claim-zone .staff-note{ font-size:11px; color:var(--text-dim); margin-bottom:10px; }
-
-  /* ---------- Claimed lock screen ---------- */
-  #claimedScreen{ margin-top:14vh; text-align:center; }
-  #claimedScreen .big-emoji{ font-size:70px; margin-bottom:10px; }
-  #claimedScreen h2{ font-family:'Baloo 2'; color:var(--accent-yellow); font-size:22px; margin:0 0 10px; }
-  #claimedScreen p{ color:var(--text-dim); font-size:14px; line-height:1.6; }
-
-  footer.hint{ text-align:center; font-size:11px; color:rgba(203,184,224,0.5); margin-top:30px; }
-
-  @media (prefers-reduced-motion: reduce){
-    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
-  }
-
-  .hidden{ display:none !important; }
+:root{
+  --bg:#100d1c;--card:#1c172a;--card2:#241d35;--orange:#ff8a1f;
+  --yellow:#ffd447;--purple:#9b6cff;--green:#4ade80;--red:#ff6262;
+  --text:#fff8ed;--muted:#c7bfd4;--border:#3b3150;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+ radial-gradient(circle at 15% 5%,#3b1644 0,transparent 30%),
+ radial-gradient(circle at 90% 20%,#40200c 0,transparent 28%),var(--bg);
+ color:var(--text);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+.container{width:min(1050px,calc(100% - 28px));margin:auto}
+.hidden{display:none!important}
+header{padding:22px 0 10px;text-align:center}
+.logo{font-size:clamp(30px,8vw,58px);font-weight:900;letter-spacing:1px;text-shadow:0 0 18px #ff8a1f66}
+.logo span{color:var(--orange)}
+.subtitle{color:var(--muted);margin-top:5px}
+.hero{padding:24px 0 12px}
+.hero-card{background:linear-gradient(145deg,#21162f,#171326);border:1px solid #594369;border-radius:24px;padding:25px;box-shadow:0 15px 50px #0008;position:relative;overflow:hidden}
+.hero-card:after{content:"🎃";position:absolute;right:-10px;top:-22px;font-size:105px;opacity:.15;transform:rotate(12deg)}
+h1,h2,h3{margin-top:0}
+.login{max-width:520px;margin:35px auto}
+.input{width:100%;padding:15px 16px;border-radius:14px;border:2px solid var(--border);background:#0f0c18;color:white;outline:none}
+.input:focus{border-color:var(--orange)}
+.btn{border:0;border-radius:14px;padding:13px 18px;font-weight:800;transition:.18s;min-height:48px}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.primary{background:linear-gradient(135deg,var(--orange),#ffb52e);color:#261204}
+.yellow{background:var(--yellow);color:#2a2000}
+.secondary{background:#332847;color:white;border:1px solid #514163}
+.green{background:var(--green);color:#06220e}
+.danger{background:#6b2630;color:#fff}
+.dashboard{position:sticky;top:0;z-index:20;background:#100d1ce8;backdrop-filter:blur(12px);padding:10px 0;border-bottom:1px solid #3a3048}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px}
+.stat small{color:var(--muted);display:block}.stat strong{font-size:22px}
+.rewards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.reward{font-size:13px;border:1px dashed #6c5b7f;border-radius:12px;padding:10px;color:#eee6f8}
+.reward.active{border-color:var(--yellow);box-shadow:0 0 18px #ffd44722}
+section{margin:24px 0}
+.section-title{display:flex;justify-content:space-between;gap:12px;align-items:end}
+.card{background:linear-gradient(145deg,var(--card),#171326);border:1px solid var(--border);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 8px 25px #0004}
+.question{border-left:4px solid var(--purple)}
+.question.done{border-left-color:var(--green)}
+.qhead{display:flex;justify-content:space-between;gap:10px}
+.badge{border-radius:999px;padding:5px 9px;font-size:12px;background:#332744;color:#ddd}
+.done .badge{background:#164b2b;color:#a7f3c0}
+.options{display:grid;gap:9px;margin:15px 0}
+.option{display:block;padding:12px;border:1px solid #4a3e5c;border-radius:12px;background:#151120}
+.option input{margin-right:8px;accent-color:var(--orange)}
+.option.correct{border-color:var(--green);background:#12301f}
+.error{color:#ff9696;min-height:22px;font-weight:700}
+.task-grid{display:grid;gap:12px}
+.task{position:relative}
+.task.done{border-color:#3cae67;background:linear-gradient(145deg,#17291e,#151326)}
+.task-icon{font-size:32px}
+.task-number{color:var(--orange);font-weight:900}
+.task p{color:#ddd4e5;line-height:1.55}
+.task button{width:100%}
+.target{background:#2b1d10;border-color:#8b5c23;box-shadow:inset 0 0 25px #ff8a1f0b}
+.target .monster{font-size:42px}
+.status{font-weight:800;color:var(--green)}
+.notice{padding:15px;border-radius:15px;background:#2d2210;border:1px solid #8b6724;line-height:1.6}
+#toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;z-index:100;background:#27202f;border:1px solid #6d5a7d;padding:12px 18px;border-radius:12px;transition:.25s;max-width:90%;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.modal{position:fixed;inset:0;background:#090710eF;z-index:80;display:flex;align-items:center;justify-content:center;padding:18px}
+.modal-box{width:min(560px,100%);background:#20182c;border:2px solid var(--orange);border-radius:24px;padding:25px;box-shadow:0 0 80px #ff8a1f33}
+.modal-box h2{color:var(--yellow)}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.actions .btn{flex:1}
+.reward-full{min-height:100vh;background:radial-gradient(circle,#37200e,#0d0a14 65%);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
+.reward-card{width:min(650px,100%);border:2px solid var(--yellow);border-radius:28px;padding:32px 20px;background:#191222;box-shadow:0 0 90px #ff8a1f30}
+.reward-emoji{font-size:70px;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px) rotate(3deg)}}
+footer{text-align:center;color:#9d94a8;padding:35px 0}
+@media(min-width:700px){
+ .task-grid{grid-template-columns:1fr 1fr}
+ .stats{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+ .rewards{grid-template-columns:1fr}
+ .hero-card{padding:20px}
+ .actions{flex-direction:column}
+}
 </style>
 </head>
 <body>
-
-<div class="floaters" id="floaters"></div>
-
-<div class="app">
-
-  <div class="site-header">
-    <h1>🎃 Trick or Read！</h1>
-    <p>不讀書就搗蛋 — 圖書館萬聖挑戰</p>
-  </div>
-
-  <!-- ================= LOGIN ================= -->
-  <div id="loginScreen">
-    <div class="card">
-      <div class="pumpkin-hero">🎃</div>
-      <h2>搗蛋鬼在圖書館出沒了！<br>快來討書吃 👻</h2>
-      <input type="text" id="nicknameInput" placeholder="輸入你的暱稱開始挑戰" maxlength="12">
-      <button class="btn" id="startBtn">開始挑戰 🍬</button>
-    </div>
-  </div>
-
-  <!-- ================= CLAIMED LOCK SCREEN ================= -->
-  <div id="claimedScreen" class="hidden">
-    <div class="card">
-      <div class="big-emoji">🎉</div>
-      <h2>您已完成領獎，<br>感謝參與萬聖節活動！</h2>
-      <p id="claimedName"></p>
-      <p>期待下次萬聖節再見 🦇🎃</p>
-    </div>
-  </div>
-
-  <!-- ================= MAIN ================= -->
-  <div id="mainScreen" class="hidden">
-
-    <div class="card" id="dashboard">
-      <p class="hello">哈囉，<b id="helloName"></b>！繼續你的萬聖大冒險 🔮</p>
-
-      <div class="bucket-wrap">
-        <svg id="bucketSvg" width="180" height="150" viewBox="0 0 180 150"></svg>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat-box" id="quizStatBox">
-          <div class="label">📚 問答大考驗</div>
-          <div class="value"><span id="quizDoneNum">0</span> / 5</div>
-        </div>
-        <div class="stat-box" id="actionStatBox">
-          <div class="label">🎃 搗蛋行動任務</div>
-          <div class="value"><span id="actionDoneNum">0</span> / 3</div>
-        </div>
-      </div>
-
-      <div class="overall-bar-track"><div class="overall-bar-fill" id="overallBarFill" style="width:0%"></div></div>
-      <div class="overall-label" id="overallLabel">總進度 0 / 8</div>
-    </div>
-
-    <div class="section-title">
-      <span class="icon">🔮</span><h3>智慧大考驗</h3><span class="sub">5 題全對過關</span>
-    </div>
-    <div id="quizList"></div>
-
-    <div class="section-title">
-      <span class="icon">👻</span><h3>搗蛋行動任務</h3><span class="sub">任選 3 項完成</span>
-    </div>
-    <div class="action-grid" id="actionList"></div>
-
-    <footer class="hint">完成 5 題問答 + 3 項行動任務，即可領取萬聖節小禮物（每人限領取一次）！</footer>
-  </div>
-
-</div>
-
-<!-- ============ Action Password Modal ============ -->
-<div class="modal-overlay hidden" id="actionModal">
-  <div class="modal-box">
-    <div class="emoji-top">🧾</div>
-    <h3>請出示任務憑證</h3>
-    <p>請向櫃檯館員出示借閱憑證或實體任務結果，由館員輸入通關密碼以完成這項搗蛋行動。</p>
-    <input type="password" inputmode="numeric" id="actionPwInput" placeholder="••••" maxlength="6">
-    <div class="modal-error" id="actionPwError"></div>
-    <div class="modal-btn-row">
-      <button class="btn secondary" id="actionCancelBtn">取消</button>
-      <button class="btn" id="actionConfirmBtn">確認</button>
-    </div>
-  </div>
-</div>
-
-<!-- ============ Celebration Modal ============ -->
-<div class="modal-overlay hidden" id="celebrateModal">
-  <div class="modal-box" id="celebrateBox">
-    <div class="emoji-top">🎉🎃🎉</div>
-    <h3>挑戰通關！</h3>
-    <p class="celebrate-msg">🎃 恭喜完成萬聖節挑戰，請出示此畫面給櫃檯館員領取萬聖節小禮物！</p>
-
-    <div class="claim-zone" id="claimZone">
-      <button class="btn" id="showClaimBtn">館員確認發放禮物</button>
-      <div id="claimForm" class="hidden" style="margin-top:12px;">
-        <p class="staff-note">館員專用：請輸入通關密碼確認已發放禮物，此動作將永久鎖定此帳號。</p>
-        <input type="password" inputmode="numeric" id="claimPwInput" placeholder="輸入通關密碼" maxlength="6">
-        <div class="modal-error" id="claimPwError"></div>
-        <button class="btn" id="claimConfirmBtn">確認發放並鎖定</button>
-      </div>
-    </div>
-  </div>
-</div>
+<div id="app"></div>
+<div id="toast"></div>
 
 <script>
-(function(){
-  "use strict";
+const QUESTIONS = [
+["個人證一次最多可以借幾本書？",["15本","20本","25本"],2],
+["熱門書借閱期限是多久？",["7天","14天","30天"],1],
+["一個人最多可以同時預約幾本書？",["5本","7本","10本"],1],
+["家庭證一次最多可以借幾本書？",["30本","40本","50本"],1],
+["還書過期的話可以利用閱讀存摺點數折抵嗎？",["可以","不行"],0],
+["借閱證期限是多久？",["3年","5年","6年"],2],
+["我手上的書已經被後面的人預約了，我還可以續借嗎？",["可以","不行"],1],
+["續借圖書最多可以續借幾次？",["1次","2次","3次"],2],
+["非熱門書的話，一次借閱期限是多久？",["14天","30天","60天"],1],
+["視聽資料借閱期限是多久？",["7天","14天","30天"],1],
+["南港分館的館藏特色是甚麼？",["鐵道文化","原住民文化","綠建築"],1],
+["圖書損毀或遺失時該怎麼辦？",["偷偷放回書架","賠償一本新書或賠書的錢","裝作沒事"],1],
+["南港分館的飲食類的書在哪一層樓？",["1樓","2樓","3樓"],1],
+["可以用手機借書嗎？",["可以","不行"],0],
+["視聽資料一次最多可以借幾件？",["3件","5件","7件"],2],
+["圖書館可以大聲講話嗎？",["可以","不可以"],1],
+["圖書館可以吃東西嗎？",["可以","不可以"],1],
+["一星期內有哪兩天圖書館閉館時間較早（星期日與星期一）？",["星期五、六","星期日、一","星期二、三"],1],
+["除國定假日外，圖書館固定休館日為？",["每月第1個星期一","每月第1個星期四","每月最後一個星期日"],1],
+["辦借書證可以用健保卡作為身分證明嗎？",["可以","不可以"],1]
+];
 
-  var STORAGE_KEY = "trickOrRead_v2";
-  var PASSWORD = "8888";
+const TASKS = [
+["👻","前往［浮動幽靈］巢穴（浮動館藏區），取走 3 本寶書，並利用自助借書機施展借閱魔法。"],
+["📚","取得 3 本一般圖書，並利用自助借書機施展借閱魔法。"],
+["🎬","前往［大聲公咆哮怪］地盤（視聽資料區），取得 1 片有聲音魔法的視聽資料並利用自助借書機施展借閱魔法。"],
+["🎃","前往兒童區［淘氣小南瓜精］或青少年區［黑帽魔法學徒］地盤，取得寶書並利用自助借書機施展借閱魔法。"],
+["🔮","前往預約書區，成功解開封印取回你預約的魔法書（成功自助取預約書一次）。"],
+["📱","利用手機 APP 借書功能，成功施展借閱魔法借閱 1 本書。"],
+["💻","使用網路施展召喚一本無形的電子書（成功搜尋一本電子書）。"],
+["🧙‍♂️","知己知彼！使用館藏查詢系統召喚並借閱 1 本與萬聖節、妖怪、怪物或神話相關的魔導書。"]
+];
 
-  var ACTION_TASKS = [
-    { id:"a1", emoji:"📗", text:"當日自助借三本一般圖書" },
-    { id:"a2", emoji:"🛟", text:"當日自助借三本浮動館藏" },
-    { id:"a3", emoji:"📀", text:"當日自助借三片視聽資料" },
-    { id:"a4", emoji:"🧑‍🎓", text:"當日自助借一本青少年圖書" },
-    { id:"a5", emoji:"🎃", text:"利用館藏查詢系統查詢萬聖節圖書，並找到貼有「南瓜鬼貼紙」的實體書籍！" },
-    { id:"a6", emoji:"📦", text:"成功自助取預約書一次" },
-    { id:"a7", emoji:"📱", text:"成功利用手機 app 借書功能借閱 1 本書" },
-    { id:"a8", emoji:"💻", text:"成功搜尋一本電子書" }
-  ];
+const MONSTERS = [
+["000","總類","愛問問題的人面獅身獸"],["100","哲學類","思索者吸血鬼"],["200","宗教類","符咒小殭屍"],
+["300","科學類","凶暴暴龍"],["400","應用科學類","瘋狂怪醫"],["500","社會科學類","黑面審判官"],
+["600","中國史地類","古墓兵馬俑"],["700","世界史地類","金字塔木乃伊"],["800","語言文學類","辭典千頁眼妖"],
+["900","藝術類","歌劇魅影"]
+];
 
-  var QUIZ_BANK = [
-    { id:"q1", text:"個人證一次最多可以借幾本書？", options:["15本","20本","25本"], answer:2 },
-    { id:"q2", text:"熱門書借閱期限是多久？", options:["7天","14天","30天"], answer:1 },
-    { id:"q3", text:"一個人最多可以同時預約幾本書？", options:["5本","7本","10本"], answer:1 },
-    { id:"q4", text:"家庭證一次最多可以借幾本書？", options:["30本","40本","50本"], answer:1 },
-    { id:"q5", text:"還書過期的話可以利用閱讀存摺點數折抵嗎？", options:["可以","不行"], answer:0 },
-    { id:"q6", text:"借閱證期限是多久？", options:["3年","5年","6年"], answer:2 },
-    { id:"q7", text:"我想預約書，可是後面已經有人預約還可以續借嗎？", options:["可以","不行"], answer:1 },
-    { id:"q8", text:"續借圖書最多可以續借幾次？", options:["1次","2次","3次"], answer:2 },
-    { id:"q9", text:"非熱門書的話，一次借閱期限是多久？", options:["14天","30天","60天"], answer:1 },
-    { id:"q10", text:"視聽資料借閱期限是多久？", options:["7天","14天","30天"], answer:1 },
-    { id:"q11", text:"南港分館的館藏特色是甚麼？", options:["鐵道文化","原住民文化","綠建築"], answer:1 }
-  ];
+const KEY="trickOrRead_Nangang_v1";
+let state = JSON.parse(localStorage.getItem(KEY)||"null");
 
-  var state = null;
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function init(nickname){
+ const qs=shuffle([...Array(20).keys()]).slice(0,5);
+ state={nickname:nickname.trim(),questions:qs,answers:{},tasks:Array(9).fill(false),
+ monster:MONSTERS[Math.floor(Math.random()*MONSTERS.length)],claimed:false};
+ save(); render();
+}
+function answered(){return Object.values(state.answers).filter(v=>v===true).length}
+function taskDone(){return state.tasks.filter(Boolean).length}
+function qualified(){return answered()===5 && taskDone()>=1}
+function rewardCount(){return answered()===5 ? (taskDone()>=2?2:taskDone()>=1?1:0):0}
+function toast(msg){let t=document.querySelector("#toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+function render(){
+ if(!state){renderLogin();return}
+ if(state.claimed){renderClaimed();return}
+ const ac=answered(),tc=taskDone(),rc=rewardCount();
+ document.getElementById("app").innerHTML=`
+ <header><div class="container">
+   <div class="logo">🎃 <span>Trick</span> or Read！</div>
+   <div class="subtitle">不讀書就搗蛋｜南港分館萬聖節圖書館利用教育活動</div>
+ </div></header>
+ <div class="dashboard"><div class="container">
+   <div class="stats">
+    <div class="stat"><small>📖 圖書館守則考驗</small><strong>${ac} / 5 題</strong></div>
+    <div class="stat"><small>👻 搗蛋行動任務</small><strong>${tc} 項</strong></div>
+   </div>
+   <div class="rewards">
+    <div class="reward ${ac===5&&tc>=1?'active':''}">🎁 答對 5 題 + 1 項行動<br>➜ 小禮或二手書 1 份</div>
+    <div class="reward ${ac===5&&tc>=2?'active':''}">🎁 答對 5 題 + 2 項以上行動<br>➜ 小禮或二手書 2 份（加碼送）</div>
+   </div>
+ </div></div>
+ <main class="container">
+   <section class="hero"><div class="hero-card">
+    <h2>🧙‍♀️ 魔法學徒 ${esc(state.nickname)}，歡迎入場！</h2>
+    <p>熟讀守則、完成任務，收集你的萬聖節魔法獎勵吧！每人限領一次。</p>
+    ${ac===5&&tc===0?'<div class="notice">📣 守則考驗已完成！再完成至少 1 項搗蛋行動，就能前往領獎。</div>':''}
+    ${ac===5&&tc===1?'<div class="notice">✨ 已達成基本通關！可領取 1 份獎勵；再多完成 1 項行動可再獲得 1 份獎勵喔！<br><br><button class="btn primary" onclick="openReward()">前往領獎 🎁</button></div>':''}
+    ${ac===5&&tc>=2?'<div class="notice">🪄 太厲害了！已達成加碼獎勵條件，可領取 2 份獎勵！<br><br><button class="btn yellow" onclick="openReward()">前往領獎 🎁</button></div>':''}
+   </div></section>
 
-  function shuffle(arr){
-    var a = arr.slice();
-    for (var i = a.length - 1; i > 0; i--){
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
-    }
-    return a;
-  }
+   <section id="quiz"><div class="section-title"><h2>📜 圖書館守則考驗</h2><span class="badge">必做 5 題</span></div>
+   <p style="color:var(--muted)">答錯可以再試一次；答對後該題會鎖定。</p>
+   ${state.questions.map((qi,i)=>questionHTML(qi,i)).join("")}</section>
 
-  function loadState(){
-    try{
-      var raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return null;
-      return JSON.parse(raw);
-    }catch(e){ return null; }
-  }
-
-  function saveState(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }
-
-  function createNewState(nickname){
-    var picked = shuffle(QUIZ_BANK).slice(0, 5);
-    var quiz = picked.map(function(q){
-      return { id:q.id, text:q.text, options:q.options, answer:q.answer, selected:null, correct:false, open:false };
-    });
-    var actions = {};
-    ACTION_TASKS.forEach(function(t){ actions[t.id] = false; });
-    return { nickname: nickname, quiz: quiz, actions: actions, claimed: false };
-  }
-
-  // ---------- ambient floaters ----------
-  function initFloaters(){
-    var wrap = document.getElementById("floaters");
-    var icons = ["🦇","👻","🕸️","🎃","🔮"];
-    for (var i=0;i<10;i++){
-      var s = document.createElement("span");
-      s.textContent = icons[Math.floor(Math.random()*icons.length)];
-      s.style.left = Math.random()*100 + "%";
-      s.style.fontSize = (16 + Math.random()*18) + "px";
-      s.style.animationDuration = (14 + Math.random()*12) + "s";
-      s.style.animationDelay = (Math.random()*14) + "s";
-      wrap.appendChild(s);
-    }
-  }
-
-  // ---------- bucket svg (signature progress element) ----------
-  function renderBucket(){
-    var quizDone = state.quiz.filter(function(q){return q.correct;}).length;
-    var actionDone = Object.keys(state.actions).filter(function(k){return state.actions[k];}).length;
-    var total = quizDone + actionDone; // out of 8
-
-    var svg = document.getElementById("bucketSvg");
-    var slots = [];
-    var positions = [
-      [30,40],[55,25],[85,18],[115,18],[145,25],[150,55],[125,72],[35,72]
-    ];
-    for (var i=0;i<8;i++){
-      var filled = i < total;
-      var isQuizCandy = i < 5;
-      var color = filled ? (isQuizCandy ? "#ffd23f" : "#4ddb8f") : "rgba(255,255,255,0.12)";
-      var stroke = filled ? "#e8600b" : "rgba(255,255,255,0.2)";
-      slots.push('<circle cx="'+positions[i][0]+'" cy="'+positions[i][1]+'" r="9" fill="'+color+'" stroke="'+stroke+'" stroke-width="2"></circle>');
-    }
-
-    var html =
-      '<g>' + slots.join("") + '</g>' +
-      '<path d="M25 70 Q90 60 155 70 L148 138 Q90 150 32 138 Z" fill="#ff8a2b" stroke="#e8600b" stroke-width="3"/>' +
-      '<path d="M25 70 Q90 58 155 70 L155 82 Q90 70 25 82 Z" fill="#e8600b"/>' +
-      '<polygon points="65,95 75,110 60,110" fill="#341f52"/>' +
-      '<polygon points="115,95 125,110 110,110" fill="#341f52"/>' +
-      '<path d="M62 120 Q90 132 118 120 L112 126 Q90 136 68 126 Z" fill="#341f52"/>' +
-      '<rect x="82" y="8" width="16" height="10" rx="2" fill="#7a4a25"/>';
-    svg.innerHTML = html;
-  }
-
-  // ---------- render dashboard ----------
-  function renderDashboard(){
-    var quizDone = state.quiz.filter(function(q){return q.correct;}).length;
-    var actionDone = Object.keys(state.actions).filter(function(k){return state.actions[k];}).length;
-
-    document.getElementById("helloName").textContent = state.nickname;
-    document.getElementById("quizDoneNum").textContent = quizDone;
-    document.getElementById("actionDoneNum").textContent = actionDone;
-
-    document.getElementById("quizStatBox").classList.toggle("done", quizDone >= 5);
-    document.getElementById("actionStatBox").classList.toggle("done", actionDone >= 3);
-
-    var total = quizDone + actionDone;
-    var pct = Math.round((total/8)*100);
-    document.getElementById("overallBarFill").style.width = pct + "%";
-    document.getElementById("overallLabel").textContent = "總進度 " + total + " / 8";
-
-    renderBucket();
-  }
-
-  // ---------- render quiz ----------
-  function renderQuiz(){
-    var list = document.getElementById("quizList");
-    list.innerHTML = "";
-    state.quiz.forEach(function(q, idx){
-      var item = document.createElement("div");
-      item.className = "quiz-item" + (q.correct ? " correct" : "") + (q.open ? " open" : "");
-
-      var qHead = document.createElement("div");
-      qHead.className = "quiz-q";
-      qHead.innerHTML =
-        '<span class="num">'+(idx+1)+'</span>' +
-        '<span style="flex:1;">'+ escapeHtml(q.text) +'</span>' +
-        '<span class="check">'+ (q.correct ? "✅" : "▾") +'</span>';
-      qHead.addEventListener("click", function(){
-        if (q.correct) return;
-        q.open = !q.open;
-        renderQuiz();
-      });
-
-      var body = document.createElement("div");
-      body.className = "quiz-body";
-
-      var feedback = document.createElement("div");
-      feedback.className = "quiz-feedback";
-
-      q.options.forEach(function(optText, optIdx){
-        var opt = document.createElement("div");
-        opt.className = "option" + (q.selected === optIdx ? " selected" : "");
-        opt.innerHTML =
-          '<input type="radio" name="'+q.id+'" '+(q.selected===optIdx?"checked":"")+' '+(q.correct?"disabled":"")+'>' +
-          '<span>'+ escapeHtml(optText) +'</span>';
-        opt.addEventListener("click", function(){
-          if (q.correct) return;
-          q.selected = optIdx;
-          renderQuiz();
-        });
-        body.appendChild(opt);
-      });
-
-      body.appendChild(feedback);
-
-      if (!q.correct){
-        var submitBtn = document.createElement("button");
-        submitBtn.className = "btn small";
-        submitBtn.textContent = "送出答案";
-        submitBtn.style.marginTop = "4px";
-        submitBtn.addEventListener("click", function(){
-          if (q.selected === null || q.selected === undefined){
-            feedback.textContent = "請先選擇一個答案喔！";
-            feedback.className = "quiz-feedback wrong";
-            return;
-          }
-          if (q.selected === q.answer){
-            q.correct = true;
-            q.open = true;
-            saveState();
-            renderQuiz();
-            renderDashboard();
-            checkWin();
-          } else {
-            feedback.textContent = "答案不對喔，再試一次！";
-            feedback.className = "quiz-feedback wrong";
-          }
-        });
-        body.appendChild(submitBtn);
-      }
-
-      item.appendChild(qHead);
-      item.appendChild(body);
-      list.appendChild(item);
-    });
-  }
-
-  // ---------- render actions ----------
-  var pendingActionId = null;
-
-  function renderActions(){
-    var list = document.getElementById("actionList");
-    list.innerHTML = "";
-    ACTION_TASKS.forEach(function(t){
-      var done = state.actions[t.id];
-      var card = document.createElement("div");
-      card.className = "action-card" + (done ? " done" : "");
-      card.innerHTML =
-        '<span class="emoji">'+t.emoji+'</span>' +
-        '<span class="txt">'+ escapeHtml(t.text) +'</span>' +
-        '<span class="mark">'+ (done ? "✅" : "👉") +'</span>';
-      if (!done){
-        card.addEventListener("click", function(){
-          openActionModal(t.id);
-        });
-      }
-      list.appendChild(card);
-    });
-  }
-
-  function openActionModal(taskId){
-    pendingActionId = taskId;
-    document.getElementById("actionPwInput").value = "";
-    document.getElementById("actionPwError").textContent = "";
-    document.getElementById("actionModal").classList.remove("hidden");
-    document.getElementById("actionPwInput").focus();
-  }
-
-  function closeActionModal(){
-    pendingActionId = null;
-    document.getElementById("actionModal").classList.add("hidden");
-  }
-
-  // ---------- win check ----------
-  function checkWin(){
-    if (state.claimed) return;
-    var quizDone = state.quiz.filter(function(q){return q.correct;}).length;
-    var actionDone = Object.keys(state.actions).filter(function(k){return state.actions[k];}).length;
-    if (quizDone >= 5 && actionDone >= 3){
-      showCelebration();
-    }
-  }
-
-  function showCelebration(){
-    var modal = document.getElementById("celebrateModal");
-    modal.classList.remove("hidden");
-    document.getElementById("claimForm").classList.add("hidden");
-    document.getElementById("claimPwInput").value = "";
-    document.getElementById("claimPwError").textContent = "";
-    document.getElementById("showClaimBtn").classList.remove("hidden");
-    spawnConfetti();
-  }
-
-  function spawnConfetti(){
-    var box = document.getElementById("celebrateBox");
-    var old = box.querySelectorAll(".confetti");
-    old.forEach(function(el){ el.remove(); });
-    var icons = ["🎃","🍬","🍭","👻","🦇","⭐"];
-    for (var i=0;i<18;i++){
-      var c = document.createElement("span");
-      c.className = "confetti";
-      c.textContent = icons[Math.floor(Math.random()*icons.length)];
-      c.style.left = Math.random()*95 + "%";
-      c.style.animationDuration = (1.6 + Math.random()*1.4) + "s";
-      c.style.animationDelay = (Math.random()*0.8) + "s";
-      box.appendChild(c);
-    }
-  }
-
-  function escapeHtml(str){
-    return String(str).replace(/[&<>"']/g, function(m){
-      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m];
-    });
-  }
-
-  // ---------- screen switching ----------
-  function showLogin(){
-    document.getElementById("loginScreen").classList.remove("hidden");
-    document.getElementById("mainScreen").classList.add("hidden");
-    document.getElementById("claimedScreen").classList.add("hidden");
-  }
-
-  function showMain(){
-    document.getElementById("loginScreen").classList.add("hidden");
-    document.getElementById("claimedScreen").classList.add("hidden");
-    document.getElementById("mainScreen").classList.remove("hidden");
-    renderDashboard();
-    renderQuiz();
-    renderActions();
-  }
-
-  function showClaimedLock(){
-    document.getElementById("loginScreen").classList.add("hidden");
-    document.getElementById("mainScreen").classList.add("hidden");
-    document.getElementById("celebrateModal").classList.add("hidden");
-    document.getElementById("claimedScreen").classList.remove("hidden");
-    document.getElementById("claimedName").textContent = state && state.nickname ? (state.nickname + "，你的禮物已經領取囉～") : "";
-  }
-
-  // ---------- init ----------
-  function init(){
-    initFloaters();
-    var saved = loadState();
-    if (saved && saved.nickname){
-      state = saved;
-      if (state.claimed){
-        showClaimedLock();
-      } else {
-        showMain();
-        checkWin();
-      }
-    } else {
-      showLogin();
-    }
-  }
-
-  document.getElementById("startBtn").addEventListener("click", function(){
-    var val = document.getElementById("nicknameInput").value.trim();
-    if (!val){
-      document.getElementById("nicknameInput").focus();
-      document.getElementById("nicknameInput").style.borderColor = "var(--danger-red)";
-      return;
-    }
-    state = createNewState(val);
-    saveState();
-    showMain();
-  });
-
-  document.getElementById("nicknameInput").addEventListener("keydown", function(e){
-    if (e.key === "Enter") document.getElementById("startBtn").click();
-  });
-
-  document.getElementById("actionCancelBtn").addEventListener("click", closeActionModal);
-
-  document.getElementById("actionConfirmBtn").addEventListener("click", function(){
-    var val = document.getElementById("actionPwInput").value.trim();
-    if (val !== PASSWORD){
-      document.getElementById("actionPwError").textContent = "密碼不正確，請洽詢櫃檯館員。";
-      return;
-    }
-    if (pendingActionId){
-      state.actions[pendingActionId] = true;
-      saveState();
-      renderActions();
-      renderDashboard();
-      closeActionModal();
-      checkWin();
-    }
-  });
-
-  document.getElementById("actionPwInput").addEventListener("keydown", function(e){
-    if (e.key === "Enter") document.getElementById("actionConfirmBtn").click();
-  });
-
-  document.getElementById("showClaimBtn").addEventListener("click", function(){
-    document.getElementById("claimForm").classList.remove("hidden");
-    document.getElementById("showClaimBtn").classList.add("hidden");
-    document.getElementById("claimPwInput").focus();
-  });
-
-  document.getElementById("claimConfirmBtn").addEventListener("click", function(){
-    var val = document.getElementById("claimPwInput").value.trim();
-    if (val !== PASSWORD){
-      document.getElementById("claimPwError").textContent = "密碼不正確，請洽詢櫃檯館員。";
-      return;
-    }
-    state.claimed = true;
-    saveState();
-    showClaimedLock();
-  });
-
-  document.getElementById("claimPwInput").addEventListener("keydown", function(e){
-    if (e.key === "Enter") document.getElementById("claimConfirmBtn").click();
-  });
-
-  init();
-})();
+   <section id="tasks"><div class="section-title"><h2>👻 搗蛋行動任務</h2><span class="badge">任選・完成 ${tc} 項</span></div>
+   <p style="color:var(--muted)">在館內完成指定行動後，點擊任務並請櫃檯館員核銷。</p>
+   <div class="task-grid">
+    ${TASKS.map((t,i)=>taskHTML(t,i)).join("")}
+    ${monsterTaskHTML()}
+   </div></section>
+ </main>
+ <footer>🎃 Trick or Read！｜南港分館魔法學徒號召令</footer>`;
+}
+function questionHTML(qi,i){
+ const q=QUESTIONS[qi], done=state.answers[i]===true;
+ return `<div class="card question ${done?'done':''}">
+  <div class="qhead"><h3>第 ${i+1} 題</h3><span class="badge">${done?'✓ 已通過':'待挑戰'}</span></div>
+  <div>${esc(q[0])}</div>
+  <div class="options">${q[1].map((o,j)=>`<label class="option ${done&&j===q[2]?'correct':''}">
+    <input type="radio" name="q${i}" value="${j}" ${done?'disabled':''}> ${String.fromCharCode(65+j)}. ${esc(o)}
+  </label>`).join("")}</div>
+  ${done?'<div class="status">✓ 答對了！魔法知識 +1</div>':`<div class="error" id="err${i}"></div><button class="btn primary" onclick="answer(${i})">送出答案 ✨</button>`}
+ </div>`;
+}
+function taskHTML(t,i){
+ const done=state.tasks[i];
+ return `<div class="card task ${done?'done':''}">
+   <div class="task-icon">${t[0]}</div><div class="task-number">任務 ${i+1}</div>
+   <p>${esc(t[1])}</p>
+   ${done?'<div class="status">✓ 已完成並鎖定</div>':'<button class="btn secondary" onclick="openTask('+i+')">完成任務・請館員核銷</button>'}
+ </div>`;
+}
+function monsterTaskHTML(){
+ const [code,name,monster]=state.monster,done=state.tasks[8];
+ return `<div class="card task target ${done?'done':''}">
+  <div class="monster">👹</div><div class="task-number">任務 9｜專屬魔物指派</div>
+  <h3>🎯 ${code} ${esc(name)}｜${esc(monster)}</h3>
+  <p>前往【${code} ${esc(name)}】尋找「${esc(monster)}」的地盤，取得 1 本該類寶書並利用自助借書機施展借閱魔法！</p>
+  ${done?'<div class="status">✓ 已完成並鎖定</div>':'<button class="btn secondary" onclick="openTask(8)">完成任務・請館員核銷</button>'}
+ </div>`;
+}
+function renderLogin(){
+ document.getElementById("app").innerHTML=`<header><div class="container">
+ <div class="logo">🎃 <span>Trick</span> or Read！</div><div class="subtitle">不讀書就搗蛋｜南港分館</div></div></header>
+ <main class="container login"><div class="hero-card">
+ <h2>🧙 魔法學徒號召令</h2>
+ <p>萬聖節來臨！熟讀《圖書館守則》、挑戰圖書館利用任務，完成後即可獲得限定小禮或二手魔法書。</p>
+ <label>請輸入你的暱稱</label><br><br>
+ <input id="nickname" class="input" maxlength="20" placeholder="例如：小南瓜">
+ <br><br><button class="btn primary" style="width:100%" onclick="start()">開始魔法試煉 🪄</button>
+ <p style="font-size:13px;color:var(--muted);margin-bottom:0">※ 系統會在本裝置保存你的挑戰進度。每人限領一次。</p>
+ </div></main>`;
+}
+function start(){const n=document.getElementById("nickname").value;if(!n.trim()){toast("請先輸入暱稱喔！");return}init(n)}
+function answer(i){
+ const el=document.querySelector(`input[name="q${i}"]:checked`),err=document.getElementById("err"+i);
+ if(!el){err.textContent="請先選擇一個答案！";return}
+ const correct=Number(el.value)===QUESTIONS[state.questions[i]][2];
+ if(correct){state.answers[i]=true;save();render();document.getElementById("quiz").scrollIntoView({behavior:"smooth"})}
+ else err.textContent="答案不對喔，再試一次！👻";
+}
+function openTask(i){
+ document.body.insertAdjacentHTML("beforeend",`<div class="modal" id="taskModal">
+ <div class="modal-box"><h2>🧾 任務核銷</h2>
+ <p>請向櫃檯館員出示借閱憑證或實體任務結果，由館員輸入通關密碼。</p>
+ <input id="taskCode" class="input" type="password" inputmode="numeric" maxlength="4" placeholder="請輸入通關密碼">
+ <p id="taskErr" class="error"></p>
+ <div class="actions"><button class="btn secondary" onclick="closeModal()">取消</button><button class="btn primary" onclick="verifyTask(${i})">確認通關</button></div>
+ </div></div>`);
+}
+function verifyTask(i){
+ if(document.getElementById("taskCode").value!=="8888"){document.getElementById("taskErr").textContent="通關密碼錯誤，請請館員重新輸入。";return}
+ state.tasks[i]=true;save();closeModal();render();toast("✨ 任務完成！恭喜你收服一隻搗蛋怪！");
+}
+function closeModal(){document.getElementById("taskModal")?.remove()}
+function openReward(){
+ if(!qualified())return;
+ const count=rewardCount();
+ document.body.insertAdjacentHTML("beforeend",`<div class="reward-full" id="rewardModal">
+  <div class="reward-card"><div class="reward-emoji">🎃</div>
+  <h1>${count===2?'太厲害了！你是特級魔法師！':'恭喜完成萬聖節挑戰！'}</h1>
+  <p style="font-size:18px;line-height:1.8">${count===2?'請出示此畫面給櫃檯館員領取【精美小禮或二手書 共 2 份】！':'請出示此畫面給櫃檯館員領取【精美小禮 1 份或二手書 1 本】！'}</p>
+  <p style="color:#bbb">🎁 本次可領取：${count} 份獎勵</p>
+  <button class="btn yellow" style="width:100%;margin-top:20px" onclick="claimReward()">館員確認發放禮物</button>
+  <button class="btn secondary" style="width:100%;margin-top:10px" onclick="document.getElementById('rewardModal').remove()">返回任務</button>
+ </div></div>`);
+}
+function claimReward(){
+ document.getElementById("rewardModal")?.remove();
+ document.body.insertAdjacentHTML("beforeend",`<div class="modal" id="claimModal"><div class="modal-box">
+ <h2>🔐 館員核銷</h2><p>請館員輸入通關密碼 8888，完成現場領獎核銷。</p>
+ <input id="claimCode" class="input" type="password" inputmode="numeric" maxlength="4" placeholder="通關密碼">
+ <p id="claimErr" class="error"></p><button class="btn primary" style="width:100%;margin-top:12px" onclick="verifyClaim()">完成核銷</button>
+ </div></div>`);
+}
+function verifyClaim(){
+ if(document.getElementById("claimCode").value!=="8888"){document.getElementById("claimErr").textContent="密碼錯誤，請由館員重新輸入。";return}
+ state.claimed=true;save();document.getElementById("claimModal").remove();render();
+}
+function renderClaimed(){
+ document.getElementById("app").innerHTML=`<div class="reward-full"><div class="reward-card">
+ <div class="reward-emoji">🎉</div><h1>您已完成領獎！</h1>
+ <p style="font-size:19px;line-height:1.9">您已於現場完成領獎，感謝參與南港分館萬聖節活動！</p>
+ <p style="color:#aaa">此帳號已永久鎖定，無法重複領取或重置。</p>
+ </div></div>`;
+}
+render();
 </script>
-
 </body>
 </html>
