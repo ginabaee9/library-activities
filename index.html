@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,887 +10,1286 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Microsoft JhengHei', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1a1425 0%, #2d1b4e 100%);
-            color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
             min-height: 100vh;
-            padding: 0;
+            padding: 10px;
+            overflow-x: hidden;
         }
-        
-        .container {
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 16px;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
-            padding: 20px 16px;
-            background: rgba(255, 140, 0, 0.1);
-            border: 2px solid #ff8c00;
-            border-radius: 12px;
-        }
-        
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 8px;
-            color: #ffd700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .header p {
-            font-size: 14px;
-            color: #e0e0e0;
-        }
-        
-        .section {
-            background: rgba(20, 10, 30, 0.8);
-            border: 1px solid #ff8c00;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            color: #ffd700;
-        }
-        
-        .login-form {
+
+        /* 登入頁面 */
+        .login-container {
             display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
         }
-        
-        input[type="text"], input[type="password"] {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ff8c00;
+
+        .login-card {
+            background: rgba(20, 33, 61, 0.95);
+            border: 2px solid #ff8c00;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(255, 140, 0, 0.3);
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .login-card h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .login-card .subtitle {
+            font-size: 1.2em;
+            color: #ff8c00;
+            margin-bottom: 30px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #ff8c00;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.05);
-            color: #f0f0f0;
-            font-size: 14px;
-        }
-        
-        input[type="text"]::placeholder, input[type="password"]::placeholder {
-            color: #888;
-        }
-        
-        button {
-            padding: 12px 20px;
-            background: #ff8c00;
             color: #fff;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .login-card input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .login-card button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #ff8c00 0%, #ffa500 100%);
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            color: #1a0a2e;
+            font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        
-        button:hover:not(:disabled) {
-            background: #ffa500;
-            transform: scale(1.05);
+
+        .login-card button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 140, 0, 0.5);
         }
-        
-        button:active:not(:disabled) {
-            transform: scale(0.98);
+
+        /* 主容器 */
+        .main-container {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s ease-in;
         }
-        
-        button:disabled {
-            background: #666;
-            cursor: not-allowed;
-            opacity: 0.6;
+
+        /* 頭部 */
+        .header {
+            background: rgba(20, 33, 61, 0.95);
+            border-bottom: 3px solid #ff8c00;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
         }
-        
-        .hidden {
-            display: none !important;
+
+        .header h1 {
+            color: #ffd700;
+            font-size: 2em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
-        
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 8px;
+
+        .user-info {
+            color: #ff8c00;
+            font-size: 1.1em;
+            margin-bottom: 15px;
         }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff8c00, #ffd700);
-            transition: width 0.3s;
-        }
-        
-        .reward-card {
-            background: rgba(255, 140, 0, 0.15);
-            border: 1px solid #ffd700;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 12px;
-            font-size: 13px;
-        }
-        
-        .question {
-            background: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid #ff8c00;
-            padding: 12px;
-            margin-bottom: 12px;
-            border-radius: 4px;
-        }
-        
-        .question.answered {
-            border-left-color: #00ff00;
-            background: rgba(0, 255, 0, 0.05);
-        }
-        
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 8px;
-            margin-bottom: 8px;
-        }
-        
-        .option {
-            padding: 10px;
-            background: rgba(255, 140, 0, 0.1);
-            border: 1px solid #ff8c00;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-        
-        .option:hover:not(:disabled) {
-            background: rgba(255, 140, 0, 0.2);
-            transform: translateX(4px);
-        }
-        
-        .option.selected {
-            background: #ff8c00;
-            color: #fff;
-            border-color: #ffa500;
-        }
-        
-        .option:disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        
-        .submit-btn {
-            padding: 10px 16px;
-            font-size: 13px;
-            width: 100%;
-        }
-        
-        .feedback {
-            font-size: 13px;
-            padding: 8px;
-            border-radius: 6px;
-            text-align: center;
-            margin-top: 8px;
-        }
-        
-        .feedback.error {
-            background: rgba(255, 68, 68, 0.2);
-            color: #ff4444;
-            border: 1px solid #ff4444;
-        }
-        
-        .feedback.success {
-            background: rgba(0, 255, 0, 0.2);
-            color: #00ff00;
-            border: 1px solid #00ff00;
-        }
-        
-        .task-grid {
+
+        /* 進度卡片 */
+        .progress-board {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
-        
-        .task-card {
+
+        .progress-card {
             background: rgba(255, 140, 0, 0.1);
-            border: 1px solid #ff8c00;
-            border-radius: 8px;
-            padding: 12px;
+            border: 2px solid #ff8c00;
+            border-radius: 10px;
+            padding: 20px;
             text-align: center;
-            cursor: pointer;
+        }
+
+        .progress-card .label {
+            color: #ffd700;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .progress-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff8c00;
+        }
+
+        .progress-card .reward-status {
+            color: #00aa00;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        /* 獎勵規則卡片 */
+        .reward-rules {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px dashed #ffd700;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .reward-rules h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .reward-rule {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            margin: 10px 0;
+            border-left: 4px solid #ff8c00;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+
+        /* 主要內容區 */
+        .content-section {
+            background: rgba(20, 33, 61, 0.95);
+            border: 2px solid #ff8c00;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+        }
+
+        .content-section h2 {
+            color: #ffd700;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ff8c00;
+            padding-bottom: 10px;
+        }
+
+        /* 問答題目樣式 */
+        .question-item {
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid #16213e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
             transition: all 0.3s;
-            font-size: 12px;
-            position: relative;
         }
-        
-        .task-card:hover {
-            background: rgba(255, 140, 0, 0.2);
-            transform: translateY(-4px);
+
+        .question-item.locked {
+            border-color: #00aa00;
+            background: rgba(0, 170, 0, 0.1);
         }
-        
-        .task-card.completed {
-            background: rgba(0, 255, 0, 0.15);
-            border-color: #00ff00;
-            cursor: default;
+
+        .question-title {
+            color: #ff8c00;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
         }
-        
-        .task-card.completed:hover {
-            transform: none;
-        }
-        
-        .task-emoji {
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-        
-        .checkmark {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 24px;
-            height: 24px;
-            background: #00ff00;
-            color: #000;
-            border-radius: 50%;
+
+        .option {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 140, 0, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        
-        /* 密碼驗證 Modal - 預設隱藏 */
-        #passwordModal {
-            display: none !important;
+
+        .option:hover:not(.disabled) {
+            background: rgba(255, 140, 0, 0.2);
+            border-color: #ff8c00;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        /* 答題反饋 */
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+
+        .feedback.correct {
+            display: block;
+            background: rgba(0, 170, 0, 0.2);
+            border: 2px solid #00aa00;
+            color: #00ff00;
+        }
+
+        .feedback.error {
+            display: block;
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            color: #ff6666;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #ff8c00 0%, #ffa500 100%);
+            color: #1a0a2e;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+            width: 100%;
+            font-size: 1em;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.5);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 行動任務樣式 */
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .task-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid #16213e;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .task-card:hover:not(.completed) {
+            border-color: #ff8c00;
+            background: rgba(255, 140, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .task-card.completed {
+            border-color: #00aa00;
+            background: rgba(0, 170, 0, 0.1);
+            cursor: default;
+        }
+
+        .task-emoji {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .task-title {
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .task-description {
+            color: #ccc;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .task-status {
+            margin-top: 12px;
+            font-weight: bold;
+            color: #00aa00;
+            display: none;
+        }
+
+        .task-card.completed .task-status {
+            display: block;
+        }
+
+        /* 彈窗樣式 */
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        #passwordModal.show {
-            display: flex !important;
-        }
-        
-        .modal-content {
-            background: #1a1425;
-            border: 2px solid #ff8c00;
-            border-radius: 12px;
-            padding: 24px;
-            max-width: 320px;
-            text-align: center;
-        }
-        
-        .modal-content h2 {
-            margin-bottom: 16px;
-            color: #ffd700;
-        }
-        
-        .modal-content p {
-            font-size: 12px;
-            color: #b0b0b0;
-            margin-bottom: 12px;
-        }
-        
-        .modal-content input {
             width: 100%;
-            margin-bottom: 16px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-in;
         }
-        
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(20, 33, 61, 0.98);
+            border: 3px solid #ff8c00;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.5);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal-content h2 {
+            color: #ffd700;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            color: #ff8c00;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px 0;
+            border: 2px solid #ff8c00;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1.2em;
+            text-align: center;
+            letter-spacing: 3px;
+        }
+
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: normal;
+        }
+
         .modal-buttons {
             display: flex;
-            gap: 12px;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
         }
-        
+
         .modal-buttons button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
             flex: 1;
         }
-        
-        .completion-screen {
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #ff8c00 0%, #ffa500 100%);
+            color: #1a0a2e;
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.5);
+        }
+
+        .btn-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ff8c00;
+            border: 2px solid #ff8c00;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 140, 0, 0.2);
+        }
+
+        .password-error {
+            color: #ff6666;
+            margin-top: 10px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .password-error.show {
+            display: block;
+        }
+
+        /* 領獎頁面 */
+        .reward-page {
+            display: none;
             text-align: center;
-            padding: 32px 16px;
+            padding: 40px;
         }
-        
-        .completion-screen h1 {
-            font-size: 32px;
+
+        .reward-page.active {
+            display: block;
+        }
+
+        .reward-page h1 {
+            font-size: 3em;
             color: #ffd700;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: bounce 1s infinite;
         }
-        
-        .completion-screen p {
-            font-size: 16px;
-            margin-bottom: 12px;
+
+        .reward-page .message {
+            font-size: 1.3em;
+            color: #ff8c00;
+            margin: 30px 0;
             line-height: 1.6;
         }
-        
-        .achievement {
-            font-size: 48px;
-            margin: 16px 0;
+
+        .reward-page .reward-gift {
+            font-size: 4em;
+            margin: 30px 0;
+            animation: float 3s ease-in-out infinite;
         }
-        
-        .hint-text {
-            font-size: 11px;
-            color: #ffcc00;
-            margin-top: 8px;
-            text-align: center;
+
+        .completed-message {
+            background: rgba(0, 170, 0, 0.2);
+            border: 3px solid #00aa00;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            color: #00ff00;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .success-message {
+            background: rgba(0, 170, 0, 0.2);
+            border: 3px solid #00aa00;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #00ff00;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* 動畫 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .progress-board {
+                grid-template-columns: 1fr;
+            }
+
+            .login-card {
+                padding: 30px 20px;
+                width: 90%;
+            }
+
+            .login-card h1 {
+                font-size: 2em;
+            }
+
+            .task-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                max-width: 90%;
+                padding: 20px;
+            }
+
+            .reward-page h1 {
+                font-size: 2em;
+            }
+
+            .reward-page .message {
+                font-size: 1.1em;
+            }
+        }
+
+        /* 完成狀態指示 */
+        .check-mark {
+            color: #00ff00;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+
+        /* 領獎按鈕 */
+        .reward-btn {
+            background: linear-gradient(135deg, #ff8c00 0%, #ffa500 100%);
+            color: #1a0a2e;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 20px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .reward-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 140, 0, 0.5);
+        }
+
+        .reward-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 版面分隔 */
+        .section-divider {
+            border-bottom: 2px dashed #ff8c00;
+            margin: 30px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 頁面頭部 -->
-        <div class="header">
-            <h1>🎃 Trick or Read！🎃</h1>
-            <p>不讀書就搗蛋</p>
-            <p style="font-size: 12px; margin-top: 8px;">南港分館 魔法學徒號召令</p>
-        </div>
-
-        <!-- 登入頁面 -->
-        <div id="loginPage" class="section">
-            <div class="section-title">👤 魔法學徒報到</div>
-            <div class="login-form">
-                <input type="text" id="nickname" placeholder="輸入你的暱稱" />
-                <button onclick="login()">進入</button>
-            </div>
-            <p style="font-size: 12px; color: #b0b0b0; text-align: center;">首次登入會自動分配 5 題問卷與 1 隻專屬魔物</p>
-        </div>
-
-        <!-- 主系統 -->
-        <div id="mainSystem" class="hidden">
-            <!-- 歡迎與使用者信息 -->
-            <div class="section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <div>
-                        <div style="font-size: 16px; color: #ffd700;">👋 歡迎，<span id="userNickname" style="font-weight: bold;"></span></div>
-                        <div style="font-size: 12px; color: #b0b0b0; margin-top: 4px;">你的專屬魔物：<span id="assignedMonster" style="color: #ffd700;"></span></div>
-                    </div>
-                    <button onclick="logout()" style="padding: 8px 16px; font-size: 12px;">登出</button>
-                </div>
-            </div>
-
-            <!-- 進度儀表板 -->
-            <div class="section">
-                <div class="section-title">📊 挑戰進度</div>
-                <div style="margin-bottom: 16px;">
-                    <div style="font-size: 13px; margin-bottom: 6px;">【圖書館守則考驗】</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="questionProgress" style="width: 0%"></div>
-                    </div>
-                    <div style="font-size: 12px; text-align: right; color: #b0b0b0;"><span id="questionCount">0</span> / 5 題</div>
-                </div>
-                <div>
-                    <div style="font-size: 13px; margin-bottom: 6px;">【搗蛋行動任務】</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="taskProgress" style="width: 0%"></div>
-                    </div>
-                    <div style="font-size: 12px; text-align: right; color: #b0b0b0;"><span id="taskCount">0</span> 項已完成</div>
-                </div>
-            </div>
-
-            <!-- 獎勵規則提示 -->
-            <div class="section">
-                <div class="section-title">🎁 獎勵規則</div>
-                <div class="reward-card">🎃 答對 5 題 + 完成 1 項行動 ➔ 獲得【精美小禮或二手書 1 份】</div>
-                <div class="reward-card">🎃 答對 5 題 + 完成 2 項以上行動 ➔ 獲得【精美小禮或二手書 2 份】(加碼送)</div>
-                <div id="rewardStatus" style="font-size: 12px; color: #ffd700; text-align: center; margin-top: 12px;"></div>
-            </div>
-
-            <!-- 圖書館守則考驗 -->
-            <div class="section">
-                <div class="section-title">📚 圖書館守則考驗（必做 5 題）</div>
-                <p class="hint-text">✓ 回答問題無需密碼・答錯可重新嘗試</p>
-                <div id="questionsContainer"></div>
-                <div style="font-size: 12px; color: #00ff00; text-align: center; margin-top: 12px;" id="questionsCompleted"></div>
-            </div>
-
-            <!-- 搗蛋行動任務 -->
-            <div class="section">
-                <div class="section-title">🎪 搗蛋行動任務</div>
-                <p class="hint-text">📌 點擊任務會由館員輸入工作人員密碼</p>
-                <div class="task-grid" id="tasksContainer"></div>
-            </div>
-
-            <!-- 領獎按鈕 -->
-            <div id="rewardButtonSection" class="hidden">
-                <button onclick="claimReward()" style="width: 100%; padding: 16px; font-size: 16px; margin-bottom: 16px;">🎉 前往領獎</button>
-            </div>
-        </div>
-
-        <!-- 領獎頁面 -->
-        <div id="completionPage" class="hidden section completion-screen">
-            <div class="achievement" id="completionEmoji">🎃</div>
-            <h1 id="completionTitle">恭喜完成挑戰！</h1>
-            <p id="completionMessage"></p>
-            <div style="background: rgba(255, 140, 0, 0.2); padding: 16px; border-radius: 8px; margin: 16px 0;">
-                <p style="color: #ffd700; font-weight: bold;">📋 領獎憑證</p>
-                <p id="certificateText" style="font-size: 13px; margin-top: 8px;"></p>
-            </div>
-            <button id="staffConfirmBtn" onclick="openStaffConfirm()" style="width: 100%;">館員確認發放禮物</button>
-            <p id="claimedMessage" class="hidden" style="color: #00ff00; margin-top: 16px;">✓ 您已於現場完成領獎，感謝參與！</p>
+    <!-- 登入頁面 -->
+    <div class="login-container" id="loginPage">
+        <div class="login-card">
+            <h1>🎃 Trick or Read！</h1>
+            <div class="subtitle">不讀書就搗蛋</div>
+            <p style="margin-bottom: 30px; color: #ff8c00;">魔法學徒號召令</p>
+            <input type="text" id="nicknameInput" placeholder="輸入你的魔法師暱稱" maxlength="20">
+            <button onclick="loginApp()">進入魔法學徒訓練營 →</button>
         </div>
     </div>
 
-    <!-- 密碼驗證 Modal（預設隱藏） -->
-    <div id="passwordModal">
+    <!-- 主應用 -->
+    <div class="main-container" id="mainApp">
+        <!-- 頭部 -->
+        <div class="header">
+            <h1>🎃 Trick or Read！不讀書就搗蛋</h1>
+            <div class="user-info">✨ 歡迎, <span id="displayName"></span> 魔法師！</div>
+        </div>
+
+        <!-- 進度儀表板 -->
+        <div class="progress-board">
+            <div class="progress-card">
+                <div class="label">【圖書館守則考驗】</div>
+                <div class="value"><span id="quizComplete">0</span> / 5</div>
+                <div style="color: #ff8c00; margin-top: 10px; font-size: 0.9em;">答題進度</div>
+            </div>
+            <div class="progress-card">
+                <div class="label">【搗蛋行動任務】</div>
+                <div class="value"><span id="taskComplete">0</span> / 10</div>
+                <div style="color: #ff8c00; margin-top: 10px; font-size: 0.9em;">任務進度</div>
+                <div class="reward-status" id="rewardStatus"></div>
+            </div>
+        </div>
+
+        <!-- 獎勵規則 -->
+        <div class="reward-rules">
+            <h3>🎁 階梯獎勵規則</h3>
+            <div class="reward-rule">
+                ✅ 答對 5 題問答 + 完成 1 項行動 → 獲得精美小禮 1 份或二手書 1 本
+            </div>
+            <div class="reward-rule">
+                ✨ 答對 5 題問答 + 完成 3 項以上行動 → 再加贈 1 份精美小禮或二手書 1 本（共 2 份）
+            </div>
+        </div>
+
+        <!-- 圖書館守則考驗 -->
+        <div class="content-section" id="quizSection">
+            <h2>📚 區塊一：【圖書館守則考驗 - 問答任務】</h2>
+            <p style="color: #ff8c00; margin-bottom: 20px;">必做 5 題 • 答錯可重試</p>
+            <div id="quizContainer"></div>
+        </div>
+
+        <div class="section-divider" id="sectionDivider"></div>
+
+        <!-- 搗蛋行動任務 -->
+        <div class="content-section" id="taskSection">
+            <h2>🎯 區塊二：【搗蛋行動任務】</h2>
+            <p style="color: #ff8c00; margin-bottom: 20px;">10 項任務 • 自由挑選</p>
+            <div class="task-grid" id="taskContainer"></div>
+        </div>
+
+        <!-- 領獎按鈕 -->
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="reward-btn" id="rewardBtn" onclick="showRewardModal()" style="display: none;">
+                🎃 前往領獎
+            </button>
+            <div class="success-message" id="successMessage"></div>
+        </div>
+
+        <!-- 領獎完成頁面 -->
+        <div class="reward-page" id="rewardPage">
+            <h1>🎉 挑戰完成！</h1>
+            <div class="reward-gift">🎃🎁🎃</div>
+            <div id="rewardMessage" class="message"></div>
+            <div class="completed-message">
+                您已於現場完成領獎，感謝參與南港分館萬聖節活動！
+            </div>
+        </div>
+    </div>
+
+    <!-- 任務密碼確認彈窗 -->
+    <div class="modal" id="taskPasswordModal">
         <div class="modal-content">
-            <h2 id="modalTitle">驗證通關密碼</h2>
-            <p id="modalHint">請將手機交由櫃檯館員輸入工作人員專用密碼</p>
-            <input type="password" id="passwordInput" placeholder="工作人員輸入區域" />
-            <div id="passwordError" style="color: #ff4444; font-size: 12px; margin-top: 6px;"></div>
+            <h2>🔐 任務核銷</h2>
+            <p>請向櫃檯館員出示借閱憑證或實體任務結果</p>
+            <input type="password" class="password-input" id="taskPassword" placeholder="請輸入館員專用密碼">
+            <div class="password-error" id="taskPasswordError">密碼錯誤，請洽詢櫃檯館員！</div>
             <div class="modal-buttons">
-                <button onclick="closePasswordModal()">取消</button>
-                <button onclick="verifyPassword()" style="background: #00ff00; color: #000;">確認</button>
+                <button class="btn-confirm" onclick="confirmTaskPassword()">確認</button>
+                <button class="btn-cancel" onclick="closeTaskModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 領獎密碼確認彈窗 -->
+    <div class="modal" id="rewardPasswordModal">
+        <div class="modal-content">
+            <h2>🎁 領取獎勵</h2>
+            <div id="rewardContent" style="margin: 20px 0;"></div>
+            <p style="color: #ffd700; margin-bottom: 15px;">請出示此畫面給櫃檯館員核銷</p>
+            <p style="color: #ff8c00; font-size: 0.95em;">館員需輸入密碼完成發放</p>
+            <input type="password" class="password-input" id="rewardPassword" placeholder="請輸入館員專用密碼">
+            <div class="password-error" id="rewardPasswordError">密碼錯誤，請洽詢櫃檯館員！</div>
+            <div class="modal-buttons">
+                <button class="btn-confirm" onclick="confirmRewardPassword()">館員確認發放禮物</button>
+                <button class="btn-cancel" onclick="closeRewardModal()">取消</button>
             </div>
         </div>
     </div>
 
     <script>
-        // ========== 題庫資料 ==========
-        const questionBank = [
-            { q: "個人證一次最多可以借幾本書？", o: ["15本", "20本", "25本"], a: 2 },
-            { q: "熱門書借閱期限是多久？", o: ["7天", "14天", "30天"], a: 1 },
-            { q: "一個人最多可以同時預約幾本書？", o: ["5本", "7本", "10本"], a: 1 },
-            { q: "家庭證一次最多可以借幾本書？", o: ["30本", "40本", "50本"], a: 1 },
-            { q: "還書過期的話可以利用閱讀存摺點數折抵嗎？", o: ["可以", "不行"], a: 0 },
-            { q: "借閱證期限是多久？", o: ["3年", "5年", "6年"], a: 2 },
-            { q: "我手上的書已經被後面的人預約了，我還可以續借嗎？", o: ["可以", "不行"], a: 1 },
-            { q: "續借圖書最多可以續借幾次？", o: ["1次", "2次", "3次"], a: 2 },
-            { q: "非熱門書的話，一次借閱期限是多久？", o: ["14天", "30天", "60天"], a: 1 },
-            { q: "視聽資料借閱期限是多久？", o: ["7天", "14天", "30天"], a: 1 },
-            { q: "南港分館的館藏特色是甚麼？", o: ["鐵道文化", "原住民文化", "綠建築"], a: 1 },
-            { q: "圖書損毀或遺失時該怎麼辦？", o: ["偷偷放回書架", "賠償一本新書或賠書的錢", "裝作沒事"], a: 1 },
-            { q: "南港分館的飲食類的書在哪一層樓？", o: ["1樓", "2樓", "3樓"], a: 1 },
-            { q: "可以用手機借書嗎？", o: ["可以", "不行"], a: 0 },
-            { q: "視聽資料一次最多可以借幾件？", o: ["3件", "5件", "7件"], a: 2 },
-            { q: "圖書館可以大聲講話嗎？", o: ["可以", "不可以"], a: 1 },
-            { q: "圖書館可以吃東西嗎？", o: ["可以", "不可以"], a: 1 },
-            { q: "一星期內有哪兩天圖書館閉館時間較早？", o: ["星期五、六", "星期日、一", "星期二、三"], a: 1 },
-            { q: "除國定假日外，圖書館固定休館日為？", o: ["每月第1個星期一", "每月第1個星期四", "每月最後一個星期日"], a: 1 },
-            { q: "辦借書證可以用健保卡作為身分證明嗎？", o: ["可以", "不可以"], a: 1 }
+        // ============ 資料庫定義 ============
+        const QUIZ_DATABASE = [
+            { question: "個人證一次最多可以借幾本書？", options: ["15本", "20本", "25本"], answer: 2 },
+            { question: "熱門書借閱期限是多久？", options: ["7天", "14天", "30天"], answer: 1 },
+            { question: "一個人最多可以同時預約幾本書？", options: ["5本", "7本", "10本"], answer: 1 },
+            { question: "家庭證一次最多可以借幾本書？", options: ["30本", "40本", "50本"], answer: 1 },
+            { question: "還書過期的話可以利用閱讀存摺點數折抵嗎？", options: ["可以", "不行"], answer: 0 },
+            { question: "借閱證期限是多久？", options: ["3年", "5年", "6年"], answer: 2 },
+            { question: "我手上的書已經被後面的人預約了，我還可以續借嗎？", options: ["可以", "不行"], answer: 1 },
+            { question: "續借圖書最多可以續借幾次？", options: ["1次", "2次", "3次"], answer: 2 },
+            { question: "非熱門書的話，一次借閱期限是多久？", options: ["14天", "30天", "60天"], answer: 1 },
+            { question: "視聽資料借閱期限是多久？", options: ["7天", "14天", "30天"], answer: 1 },
+            { question: "南港分館的館藏特色是甚麼？", options: ["鐵道文化", "原住民文化", "綠建築"], answer: 1 },
+            { question: "圖書損毀或遺失時該怎麼辦？", options: ["偷偷放回書架", "賠償一本新書或賠書的定價", "裝作沒事"], answer: 1 },
+            { question: "南港分館的飲食類的書在哪一層樓？", options: ["1樓", "2樓", "3樓"], answer: 1 },
+            { question: "可以用手機借書嗎？", options: ["可以", "不行"], answer: 0 },
+            { question: "視聽資料一次最多可以借幾件？", options: ["3件", "5件", "7件"], answer: 2 },
+            { question: "圖書館可以大聲講話嗎？", options: ["可以", "不可以"], answer: 1 },
+            { question: "圖書館可以吃東西嗎？", options: ["可以", "不可以"], answer: 1 },
+            { question: "圖書館一周有兩天只開放到17:00，請問是哪兩天?", options: ["星期五、星期六", "星期日、星期一", "星期二、星期三"], answer: 1 },
+            { question: "除國定假日外，圖書館固定休館日為？", options: ["每月第1個星期一", "每月第1個星期四", "每月最後一個星期日"], answer: 1 },
+            { question: "辦借書證可以用健保卡作為身分證明嗎？", options: ["可以", "不可以"], answer: 1 }
         ];
 
-        // ========== 魔物資料 ==========
-        const monsterTable = [
-            { code: "000", name: "愛問問題的人面獅身獸", cate: "總類" },
-            { code: "100", name: "思索者吸血鬼", cate: "哲學類" },
-            { code: "200", name: "符咒小殭屍", cate: "宗教類" },
-            { code: "300", name: "凶暴暴龍", cate: "科學類" },
-            { code: "400", name: "瘋狂怪醫", cate: "應用科學類" },
-            { code: "500", name: "黑面審判官", cate: "社會科學類" },
-            { code: "600", name: "古墓兵馬俑", cate: "中國史地類" },
-            { code: "700", name: "金字塔木乃伊", cate: "世界史地類" },
-            { code: "800", name: "辭典千頁眼妖", cate: "語言文學類" },
-            { code: "900", name: "歌劇魅影", cate: "藝術類" }
+        const TASKS_DATABASE = [
+            { emoji: "👻", name: "浮動幽靈", desc: "前往浮動館藏區，取走 3 本浮動館藏並利用自助借書機施展借閱魔法" },
+            { emoji: "📚", name: "一般圖書", desc: "取得 3 本一般圖書，並利用自助借書機施展借閱魔法" },
+            { emoji: "🎬", name: "大聲公咆哮怪", desc: "前往視聽資料區，借閱 1 片視聽資料並利用自助借書機施展借閱魔法" },
+            { emoji: "🎃", name: "淘氣小南瓜精", desc: "前往兒童區或青少年區，自助借閱 1 本兒童或青少年書籍" },
+            { emoji: "🏺", name: "特色守護靈", desc: "前往特色館藏區尋找「陶壺守護靈」（南港分館原住民文化特色館藏），借閱 1 本特色館藏圖書" },
+            { emoji: "🔮", name: "預約書區", desc: "前往預約書架，成功解開封印取回你預約的魔法書（自助取預約書 1 本）" },
+            { emoji: "📱", name: "手機APP借書", desc: "使用手機 APP 借書功能，成功借閱 1 本書" },
+            { emoji: "💻", name: "電子書召喚", desc: "使用館內查詢機或手機網路施展召喚，成功搜尋 1 本電子書" },
+            { emoji: "🧙‍♂️", name: "館藏查詢", desc: "使用館藏查詢系統搜尋並借閱 1 本與萬聖節、妖怪、怪物或神話相關的圖書" }
         ];
 
-        // ========== 任務資料 ==========
-        const tasks = [
-            { emoji: "👻", name: "浮動幽靈", desc: "借浮動館藏 3 本" },
-            { emoji: "📚", name: "一般圖書", desc: "借一般圖書 3 本" },
-            { emoji: "🎬", name: "大聲公咆哮怪", desc: "借視聽資料 1 件" },
-            { emoji: "🎃", name: "淘氣小南瓜精", desc: "借兒童/青少年區書籍" },
-            { emoji: "🔮", name: "預約書區", desc: "取回預約書 1 本" },
-            { emoji: "📱", name: "手機 APP", desc: "用手機 APP 借書" },
-            { emoji: "💻", name: "電子書", desc: "搜尋一本電子書" },
-            { emoji: "🧙", name: "館藏查詢", desc: "查詢並借怪物相關書" }
+        const MONSTERS_DATABASE = [
+            { code: "000", category: "總類", monster: "愛問問題的人面獅身獸" },
+            { code: "100", category: "哲學類", monster: "思索者吸血鬼" },
+            { code: "200", category: "宗教類", monster: "符咒小殭屍" },
+            { code: "300", category: "科學類", monster: "科學怪龍" },
+            { code: "400", category: "應用科學類", monster: "瘋狂怪醫" },
+            { code: "500", category: "社會科學類", monster: "守護秩序貓頭鷹" },
+            { code: "600", category: "中國史地類", monster: "古墓兵馬俑" },
+            { code: "700", category: "世界史地類", monster: "金字塔木乃伊" },
+            { code: "800", category: "語言文學類", monster: "辭典千頁眼妖" },
+            { code: "900", category: "藝術類", monster: "歌劇魅影" }
         ];
 
-        // ========== 全局變量 ==========
-        let currentUser = null;
-        let userQuestions = [];
-        let userAnswers = {};          // 只記錄已正確提交的答案
-        let userSelections = {};       // 記錄當前選中但未提交的答案
-        let userTasks = {};
-        let assignedMonster = null;
-        let passwordModalMode = null;
-        let passwordModalCallback = null;
+        // ============ 系統狀態 ============
+        let appState = {
+            nickname: "",
+            selectedQuizzes: [],
+            selectedMonster: null,
+            quizCompleted: new Array(5).fill(false),
+            tasksCompleted: new Array(10).fill(false),
+            claimedCount: 0,
+            currentTaskIndex: -1
+        };
 
-        // ========== 初始化函數 ==========
-        function init() {
-            const saved = localStorage.getItem('libraryUser');
-            if (saved) {
-                const data = JSON.parse(saved);
-                currentUser = data.nickname;
-                userQuestions = data.questions;
-                userAnswers = data.answers;
-                userSelections = data.selections || {};
-                userTasks = data.tasks;
-                assignedMonster = data.monster;
-                
-                if (data.claimed) {
-                    showCompletionPage();
+        const PASSWORD = "5232";
+
+        // ============ 工具函數 ============
+        function saveToStorage() {
+            localStorage.setItem('appState', JSON.stringify(appState));
+        }
+
+        function loadFromStorage() {
+            const stored = localStorage.getItem('appState');
+            if (stored) {
+                appState = JSON.parse(stored);
+                return true;
+            }
+            return false;
+        }
+
+        function getRandomItems(array, count) {
+            const shuffled = [...array].sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, count);
+        }
+
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function updateProgress() {
+            const quizCount = appState.quizCompleted.filter(q => q).length;
+            const taskCount = appState.tasksCompleted.filter(t => t).length;
+            
+            const quizCompleteEl = document.getElementById('quizComplete');
+            if (quizCompleteEl) quizCompleteEl.textContent = quizCount;
+            
+            const taskCompleteEl = document.getElementById('taskComplete');
+            if (taskCompleteEl) taskCompleteEl.textContent = taskCount;
+
+            updateRewardStatus(quizCount, taskCount);
+            checkRewardButtons(quizCount, taskCount);
+        }
+
+        function updateRewardStatus(quizCount, taskCount) {
+            const statusEl = document.getElementById('rewardStatus');
+            if (statusEl) {
+                if (appState.claimedCount === 1) {
+                    statusEl.textContent = '已領取 1 份禮物 🎁（累計達 3 項行動可領取第 2 份）';
+                    statusEl.style.display = 'block';
                 } else {
-                    showMainSystem();
+                    statusEl.style.display = 'none';
                 }
             }
         }
 
-        // ========== 登入函數 ==========
-        function login() {
-            const nickname = document.getElementById('nickname').value.trim();
-            if (!nickname) {
-                alert('請輸入暱稱');
+        function checkRewardButtons(quizCount, taskCount) {
+            const rewardBtn = document.getElementById('rewardBtn');
+            const successMessage = document.getElementById('successMessage');
+
+            if (!rewardBtn || !successMessage) return;
+
+            if (appState.claimedCount === 2) {
+                rewardBtn.style.display = 'none';
+                successMessage.classList.remove('show');
                 return;
             }
 
-            currentUser = nickname;
+            if (quizCount === 5) {
+                if (appState.claimedCount === 0 && taskCount >= 1) {
+                    rewardBtn.style.display = 'block';
+                    rewardBtn.textContent = '🎃 前往領獎（第 1 份禮物）';
+                    successMessage.classList.remove('show');
+                } else if (appState.claimedCount === 1 && taskCount >= 3) {
+                    rewardBtn.style.display = 'block';
+                    rewardBtn.textContent = '🎃 領取第 2 份加碼禮物';
+                    successMessage.classList.remove('show');
+                } else {
+                    rewardBtn.style.display = 'none';
+                }
+            } else {
+                rewardBtn.style.display = 'none';
+            }
+        }
+
+        // ============ 登入流程 ============
+        function loginApp() {
+            const nicknameInput = document.getElementById('nicknameInput');
+            const nickname = nicknameInput ? nicknameInput.value.trim() : '';
             
-            // 隨機抽 5 題
-            userQuestions = [];
-            const indices = [];
-            while (userQuestions.length < 5) {
-                const idx = Math.floor(Math.random() * questionBank.length);
-                if (!indices.includes(idx)) {
-                    indices.push(idx);
-                    userQuestions.push(questionBank[idx]);
+            if (!nickname) {
+                alert('請輸入魔法師暱稱');
+                return;
+            }
+
+            appState.nickname = nickname;
+
+            if (loadFromStorage() && appState.nickname === nickname && appState.selectedQuizzes.length > 0) {
+                showMainApp();
+            } else {
+                appState.selectedQuizzes = getRandomItems(QUIZ_DATABASE, 5);
+                appState.selectedMonster = getRandomItem(MONSTERS_DATABASE);
+                appState.quizCompleted = new Array(5).fill(false);
+                appState.tasksCompleted = new Array(10).fill(false);
+                appState.claimedCount = 0;
+                saveToStorage();
+                showMainApp();
+            }
+        }
+
+        function showMainApp() {
+            const loginPage = document.getElementById('loginPage');
+            if (loginPage) loginPage.style.display = 'none';
+            
+            const mainApp = document.getElementById('mainApp');
+            if (mainApp) mainApp.style.display = 'block';
+            
+            const displayName = document.getElementById('displayName');
+            if (displayName) displayName.textContent = appState.nickname;
+
+            if (appState.claimedCount === 2) {
+                showRewardCompletedPage();
+            } else {
+                initializeQuizzes();
+                initializeTasks();
+                updateProgress();
+            }
+        }
+
+        // ============ 問答題目初始化 ============
+        function initializeQuizzes() {
+            const container = document.getElementById('quizContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            appState.selectedQuizzes.forEach((quiz, index) => {
+                const isCompleted = appState.quizCompleted[index];
+                
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question-item ${isCompleted ? 'locked' : ''}`;
+                questionDiv.id = `quiz-${index}`;
+
+                let optionsHTML = '';
+                quiz.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option ${isCompleted ? 'disabled' : ''}">
+                            <input type="radio" name="quiz-${index}" value="${optIndex}" ${isCompleted ? 'disabled' : ''}>
+                            <span class="option-text">${option}</span>
+                        </label>
+                    `;
+                });
+
+                questionDiv.innerHTML = `
+                    <div class="question-title">問題 ${index + 1}: ${quiz.question} ${isCompleted ? '<span class="check-mark">✓</span>' : ''}</div>
+                    ${optionsHTML}
+                    <div class="feedback" id="feedback-${index}"></div>
+                    <button class="submit-btn" id="btn-${index}" onclick="submitQuizAnswer(${index})" ${isCompleted ? 'disabled' : ''}>
+                        ${isCompleted ? '已完成 ✓' : '送出答案'}
+                    </button>
+                `;
+
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function submitQuizAnswer(index) {
+            const selectedOption = document.querySelector(`input[name="quiz-${index}"]:checked`);
+            
+            if (!selectedOption) {
+                alert('請選擇答案');
+                return;
+            }
+
+            const quiz = appState.selectedQuizzes[index];
+            const answer = parseInt(selectedOption.value);
+            const feedback = document.getElementById(`feedback-${index}`);
+
+            if (answer === quiz.answer) {
+                if (feedback) {
+                    feedback.className = 'feedback correct';
+                    feedback.textContent = '✓ 答案正確！太棒了！';
+                }
+                
+                appState.quizCompleted[index] = true;
+                saveToStorage();
+
+                const quizItem = document.getElementById(`quiz-${index}`);
+                if (quizItem) {
+                    quizItem.classList.add('locked');
+                }
+                
+                const btn = document.getElementById(`btn-${index}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = '已完成 ✓';
+                }
+
+                document.querySelectorAll(`input[name="quiz-${index}"]`).forEach(input => {
+                    input.disabled = true;
+                });
+                
+                document.querySelectorAll(`#quiz-${index} .option`).forEach(opt => {
+                    opt.classList.add('disabled');
+                });
+
+                updateProgress();
+            } else {
+                if (feedback) {
+                    feedback.className = 'feedback error';
+                    feedback.textContent = '❌ 答案不對喔，再想一下試試看！';
+                }
+                selectedOption.checked = false;
+            }
+        }
+
+        // ============ 行動任務初始化 ============
+        function initializeTasks() {
+            const container = document.getElementById('taskContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            TASKS_DATABASE.forEach((task, index) => {
+                createTaskCard(task, index, container);
+            });
+
+            const monsterTask = appState.selectedMonster;
+            const specialTask = {
+                emoji: "🗺️",
+                name: "專屬魔物指派任務",
+                desc: `🎯 前往【${monsterTask.code} ${monsterTask.category}】尋找『${monsterTask.monster}』的地盤，取得 1 本該類圖書並利用自助借書機施展借閱魔法！`
+            };
+            createTaskCard(specialTask, 9, container);
+        }
+
+        function createTaskCard(task, index, container) {
+            const isCompleted = appState.tasksCompleted[index];
+            
+            const card = document.createElement('div');
+            card.className = `task-card ${isCompleted ? 'completed' : ''}`;
+            card.id = `task-${index}`;
+            card.onclick = () => {
+                if (!isCompleted) openTaskModal(index);
+            };
+
+            card.innerHTML = `
+                <div class="task-emoji">${task.emoji}</div>
+                <div class="task-title">${task.name}</div>
+                <div class="task-description">${task.desc}</div>
+                <div class="task-status">✓ 已完成</div>
+            `;
+
+            container.appendChild(card);
+        }
+
+        // ============ 任務密碼確認 ============
+        function openTaskModal(taskIndex) {
+            appState.currentTaskIndex = taskIndex;
+            const passwordInput = document.getElementById('taskPassword');
+            if (passwordInput) {
+                passwordInput.value = '';
+            }
+            const errorEl = document.getElementById('taskPasswordError');
+            if (errorEl) {
+                errorEl.classList.remove('show');
+            }
+            const modal = document.getElementById('taskPasswordModal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        function closeTaskModal() {
+            const modal = document.getElementById('taskPasswordModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+            appState.currentTaskIndex = -1;
+        }
+
+        function confirmTaskPassword() {
+            const passwordInput = document.getElementById('taskPassword');
+            const password = passwordInput ? passwordInput.value : '';
+            const errorEl = document.getElementById('taskPasswordError');
+
+            if (password === PASSWORD) {
+                if (errorEl) {
+                    errorEl.classList.remove('show');
+                }
+                
+                appState.tasksCompleted[appState.currentTaskIndex] = true;
+                saveToStorage();
+
+                const card = document.getElementById(`task-${appState.currentTaskIndex}`);
+                if (card) {
+                    card.classList.add('completed');
+                }
+
+                updateProgress();
+                closeTaskModal();
+            } else {
+                if (errorEl) {
+                    errorEl.classList.add('show');
                 }
             }
+        }
 
-            // 隨機派 1 隻魔物
-            assignedMonster = monsterTable[Math.floor(Math.random() * monsterTable.length)];
+        // ============ 領獎流程 ============
+        function showRewardModal() {
+            const quizCount = appState.quizCompleted.filter(q => q).length;
+            const taskCount = appState.tasksCompleted.filter(t => t).length;
 
-            // 初始化任務狀態
-            userTasks = {};
-            for (let i = 0; i < 9; i++) {
-                userTasks[i] = false;
+            let rewardText = '';
+
+            if (appState.claimedCount === 0) {
+                if (taskCount >= 3) {
+                    rewardText = '🎃 恭喜達成最高榮譽！<br>請找館員一次領取<br>【精美小禮或二手書 共 2 份】';
+                } else {
+                    rewardText = '🎃 恭喜完成 5 題問答與 1 項行動任務！<br>請找館員領取<br>【精美小禮 1 份或二手書 1 本】';
+                }
+            } else if (appState.claimedCount === 1) {
+                rewardText = '🎃 恭喜成為特級魔法師！<br>累積完成 3 項行動任務，<br>請找館員領取【第 2 份加碼禮物】';
             }
 
-            userAnswers = {};
-            userSelections = {};
+            const rewardContentEl = document.getElementById('rewardContent');
+            if (rewardContentEl) {
+                rewardContentEl.innerHTML = rewardText;
+            }
 
-            saveData(false);
-            showMainSystem();
-        }
+            const passwordInput = document.getElementById('rewardPassword');
+            if (passwordInput) {
+                passwordInput.value = '';
+            }
 
-        // ========== 存檔函數 ==========
-        function saveData(claimed = false) {
-            const data = {
-                nickname: currentUser,
-                questions: userQuestions,
-                answers: userAnswers,
-                selections: userSelections,
-                tasks: userTasks,
-                monster: assignedMonster,
-                claimed: claimed
-            };
-            localStorage.setItem('libraryUser', JSON.stringify(data));
-        }
+            const errorEl = document.getElementById('rewardPasswordError');
+            if (errorEl) {
+                errorEl.classList.remove('show');
+            }
 
-        // ========== 登出函數 ==========
-        function logout() {
-            if (confirm('確定要登出嗎？')) {
-                localStorage.removeItem('libraryUser');
-                currentUser = null;
-                userQuestions = [];
-                userAnswers = {};
-                userSelections = {};
-                userTasks = {};
-                assignedMonster = null;
-                
-                document.getElementById('mainSystem').classList.add('hidden');
-                document.getElementById('completionPage').classList.add('hidden');
-                
-                document.getElementById('loginPage').classList.remove('hidden');
-                document.getElementById('nickname').value = '';
-                document.getElementById('nickname').focus();
+            const modal = document.getElementById('rewardPasswordModal');
+            if (modal) {
+                modal.classList.add('active');
             }
         }
 
-        // ========== 顯示主系統 ==========
-        function showMainSystem() {
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('mainSystem').classList.remove('hidden');
-            document.getElementById('completionPage').classList.add('hidden');
-            
-            document.getElementById('passwordModal').classList.remove('show');
-            
-            document.getElementById('userNickname').textContent = currentUser;
-            document.getElementById('assignedMonster').textContent = `【${assignedMonster.code} ${assignedMonster.cate}】${assignedMonster.name}`;
-            
-            renderQuestions();
-            renderTasks();
+        function closeRewardModal() {
+            const modal = document.getElementById('rewardPasswordModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        function confirmRewardPassword() {
+            const passwordInput = document.getElementById('rewardPassword');
+            const password = passwordInput ? passwordInput.value : '';
+            const errorEl = document.getElementById('rewardPasswordError');
+            const taskCount = appState.tasksCompleted.filter(t => t).length;
+
+            if (password === PASSWORD) {
+                if (errorEl) {
+                    errorEl.classList.remove('show');
+                }
+
+                if (appState.claimedCount === 0) {
+                    if (taskCount >= 3) {
+                        appState.claimedCount = 2;
+                        saveToStorage();
+                        closeRewardModal();
+                        showRewardCompletedPage();
+                    } else {
+                        appState.claimedCount = 1;
+                        saveToStorage();
+                        closeRewardModal();
+                        showFirstRewardSuccess();
+                    }
+                } else if (appState.claimedCount === 1) {
+                    appState.claimedCount = 2;
+                    saveToStorage();
+                    closeRewardModal();
+                    showRewardCompletedPage();
+                }
+            } else {
+                if (errorEl) {
+                    errorEl.classList.add('show');
+                }
+            }
+        }
+
+        function showFirstRewardSuccess() {
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                successMessage.innerHTML = '🎉 第 1 份禮品領取成功！若再累積完成達 3 項行動任務，即可再回來領取第 2 份加碼禮物喔！';
+                successMessage.classList.add('show');
+            }
             updateProgress();
         }
 
-        // ========== 渲染題目 ==========
-        function renderQuestions() {
-            const container = document.getElementById('questionsContainer');
-            container.innerHTML = '';
+        function showRewardCompletedPage() {
+            const quizSection = document.getElementById('quizSection');
+            const taskSection = document.getElementById('taskSection');
+            const sectionDivider = document.getElementById('sectionDivider');
+            const rewardBtn = document.getElementById('rewardBtn');
+            const successMessage = document.getElementById('successMessage');
+            const rewardPage = document.getElementById('rewardPage');
 
-            userQuestions.forEach((q, idx) => {
-                const isAnswered = userAnswers[idx] !== undefined;
-                const selectedOption = userSelections[idx];
+            if (quizSection) quizSection.style.display = 'none';
+            if (taskSection) taskSection.style.display = 'none';
+            if (sectionDivider) sectionDivider.style.display = 'none';
+            if (rewardBtn) rewardBtn.style.display = 'none';
+            if (successMessage) successMessage.classList.remove('show');
 
-                let html = `<div class="question ${isAnswered ? 'answered' : ''}" id="question-${idx}">
-                    <div style="font-weight: bold; margin-bottom: 8px;">Q${idx + 1}. ${q.q}</div>
-                    <div class="options">`;
+            const taskCount = appState.tasksCompleted.filter(t => t).length;
+            const rewardMessage = taskCount >= 3 
+                ? '🎃 恭喜您已領取全部 2 份禮品'
+                : '🎃 恭喜完成萬聖節挑戰！';
 
-                q.o.forEach((option, optIdx) => {
-                    const isSelected = selectedOption === optIdx;
-                    const isDisabled = isAnswered;
-                    html += `<div class="option ${isSelected ? 'selected' : ''}" 
-                                 onclick="selectOption(${idx}, ${optIdx})"
-                                 ${isDisabled ? 'style="cursor: not-allowed;"' : ''}>
-                                ${option}
-                             </div>`;
+            const rewardMessageEl = document.getElementById('rewardMessage');
+            if (rewardMessageEl) {
+                rewardMessageEl.textContent = rewardMessage;
+            }
+
+            if (rewardPage) {
+                rewardPage.classList.add('active');
+            }
+        }
+
+        // ============ 密碼輸入框安全性設定 ============
+        function setupPasswordInputSecurity() {
+            const passwordInputs = ['taskPassword', 'rewardPassword'];
+            
+            passwordInputs.forEach(inputId => {
+                const inputEl = document.getElementById(inputId);
+                if (!inputEl) return;
+
+                // 禁用右鍵菜單
+                inputEl.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    return false;
                 });
 
-                html += `</div>`;
-                html += `<button class="submit-btn" onclick="submitAnswer(${idx})" ${isAnswered ? 'disabled' : ''}>送出答案</button>`;
-                html += `<div id="feedback-${idx}"></div>`;
-                html += `</div>`;
+                // 禁用複製
+                inputEl.addEventListener('copy', (e) => {
+                    e.preventDefault();
+                    return false;
+                });
 
-                container.innerHTML += html;
+                // 禁用剪切
+                inputEl.addEventListener('cut', (e) => {
+                    e.preventDefault();
+                    return false;
+                });
+
+                // 禁用粘貼
+                inputEl.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    return false;
+                });
+
+                // 禁用文本選擇
+                inputEl.addEventListener('selectstart', (e) => {
+                    e.preventDefault();
+                    return false;
+                });
+
+                // 禁用拖拽
+                inputEl.addEventListener('drag', (e) => {
+                    e.preventDefault();
+                    return false;
+                });
+
+                // 禁用浏览器自动填充
+                inputEl.setAttribute('autocomplete', 'off');
+                inputEl.setAttribute('autocorrect', 'off');
+                inputEl.setAttribute('autocapitalize', 'off');
+                inputEl.setAttribute('spellcheck', 'false');
             });
         }
 
-        // ========== 選擇選項（不提交） ==========
-        function selectOption(qIdx, optIdx) {
-            // 已答對的題目無法修改
-            if (userAnswers[qIdx] !== undefined) return;
+        // ============ 初始化 ============
+        window.addEventListener('load', () => {
+            setupPasswordInputSecurity();
             
-            userSelections[qIdx] = optIdx;
-            
-            // 更新選項的視覺狀態
-            const options = document.querySelectorAll(`#question-${qIdx} .option`);
-            options.forEach((opt, idx) => {
-                if (idx === optIdx) {
-                    opt.classList.add('selected');
-                } else {
-                    opt.classList.remove('selected');
+            if (loadFromStorage()) {
+                const nicknameInput = document.getElementById('nicknameInput');
+                if (nicknameInput) {
+                    nicknameInput.value = appState.nickname;
                 }
-            });
-        }
-
-        // ========== 提交答案 ==========
-        function submitAnswer(qIdx) {
-            // 已答對的題目無法重新提交
-            if (userAnswers[qIdx] !== undefined) return;
-            
-            // 檢查是否選擇了選項
-            if (userSelections[qIdx] === undefined) {
-                showFeedback(qIdx, '❌ 請先選擇一個答案', false);
-                return;
-            }
-            
-            const q = userQuestions[qIdx];
-            const selectedAnswer = userSelections[qIdx];
-            
-            if (selectedAnswer === q.a) {
-                // 答對
-                userAnswers[qIdx] = selectedAnswer;
-                showFeedback(qIdx, '✅ 答對了！恭喜過關！', true);
-                lockQuestion(qIdx);
-                saveData(false);
-                updateProgress();
-            } else {
-                // 答錯
-                showFeedback(qIdx, '❌ 答案不對喔，再想一下試試看！', false);
-            }
-        }
-
-        // ========== 顯示反饋訊息 ==========
-        function showFeedback(qIdx, message, isSuccess) {
-            const feedbackDiv = document.getElementById(`feedback-${qIdx}`);
-            feedbackDiv.innerHTML = `<div class="feedback ${isSuccess ? 'success' : 'error'}">${message}</div>`;
-        }
-
-        // ========== 鎖定已答對的題目 ==========
-        function lockQuestion(qIdx) {
-            // 禁用所有選項
-            const options = document.querySelectorAll(`#question-${qIdx} .option`);
-            options.forEach(opt => {
-                opt.style.cursor = 'not-allowed';
-                opt.style.opacity = '0.7';
-            });
-            
-            // 禁用送出按鈕
-            const submitBtn = document.querySelector(`#question-${qIdx} .submit-btn`);
-            if (submitBtn) {
-                submitBtn.disabled = true;
-            }
-        }
-
-        // ========== 渲染任務卡片 ==========
-        function renderTasks() {
-            const container = document.getElementById('tasksContainer');
-            container.innerHTML = '';
-
-            tasks.forEach((task, idx) => {
-                const completed = userTasks[idx];
-                const html = `<div class="task-card ${completed ? 'completed' : ''}" onclick="completeTask(${idx})">
-                    ${completed ? '<div class="checkmark">✓</div>' : ''}
-                    <div class="task-emoji">${task.emoji}</div>
-                    <div style="font-weight: bold; margin-bottom: 4px;">${task.name}</div>
-                    <div style="font-size: 11px; color: #b0b0b0;">${task.desc}</div>
-                </div>`;
-                container.innerHTML += html;
-            });
-
-            const completed9 = userTasks[8];
-            const monsterTaskHtml = `<div class="task-card ${completed9 ? 'completed' : ''}" onclick="completeTask(8)">
-                ${completed9 ? '<div class="checkmark">✓</div>' : ''}
-                <div class="task-emoji">🗺️</div>
-                <div style="font-weight: bold; margin-bottom: 4px;">專屬魔物</div>
-                <div style="font-size: 11px; color: #b0b0b0;">在【${assignedMonster.code}】尋找《${assignedMonster.name}》</div>
-            </div>`;
-            container.innerHTML += monsterTaskHtml;
-        }
-
-        // ========== 完成任務（打開密碼 Modal） ==========
-        function completeTask(taskIdx) {
-            if (userTasks[taskIdx]) return;
-            
-            passwordModalMode = 'task';
-            passwordModalCallback = () => {
-                userTasks[taskIdx] = true;
-                saveData(false);
-                renderTasks();
-                updateProgress();
-                closePasswordModal();
-            };
-
-            document.getElementById('modalTitle').textContent = '完成行動任務';
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('passwordInput').focus();
-            document.getElementById('passwordError').textContent = '';
-            
-            document.getElementById('passwordModal').classList.add('show');
-        }
-
-        // ========== 更新進度 ==========
-        function updateProgress() {
-            const questionsCompleted = Object.keys(userAnswers).length;
-            document.getElementById('questionCount').textContent = questionsCompleted;
-            document.getElementById('questionProgress').style.width = (questionsCompleted / 5) * 100 + '%';
-
-            const tasksCompleted = Object.values(userTasks).filter(v => v).length;
-            document.getElementById('taskCount').textContent = tasksCompleted;
-            document.getElementById('taskProgress').style.width = (tasksCompleted / 9) * 100 + '%';
-
-            const allAnswerCorrect = questionsCompleted === 5;
-            if (allAnswerCorrect && tasksCompleted >= 1 && tasksCompleted < 2) {
-                document.getElementById('rewardStatus').textContent = '✨ 已達成基本通關！可領取 1 份獎勵';
-                document.getElementById('rewardButtonSection').classList.remove('hidden');
-            } else if (allAnswerCorrect && tasksCompleted >= 2) {
-                document.getElementById('rewardStatus').textContent = '🌟 太厲害了！可領取 2 份獎勵';
-                document.getElementById('rewardButtonSection').classList.remove('hidden');
-            } else {
-                document.getElementById('rewardStatus').textContent = '';
-                document.getElementById('rewardButtonSection').classList.add('hidden');
-            }
-
-            document.getElementById('questionsCompleted').textContent = allAnswerCorrect ? '✓ 所有題目已完成！' : '';
-        }
-
-        // ========== 領獎函數 ==========
-        function claimReward() {
-            const tasksCompleted = Object.values(userTasks).filter(v => v).length;
-            
-            document.getElementById('mainSystem').classList.add('hidden');
-            document.getElementById('completionPage').classList.remove('hidden');
-            
-            if (tasksCompleted >= 2) {
-                document.getElementById('completionEmoji').textContent = '🎃';
-                document.getElementById('completionTitle').textContent = '太厲害了！';
-                document.getElementById('completionMessage').innerHTML = '🎃 恭喜成為特級魔法師！<br>請出示此畫面給櫃檯館員領取<br>【精美小禮或二手書 共 2 份】！';
-                document.getElementById('certificateText').textContent = `${currentUser} - 特級魔法師勳章 (${new Date().toLocaleDateString('zh-TW')})`;
-            } else {
-                document.getElementById('completionEmoji').textContent = '🎃';
-                document.getElementById('completionTitle').textContent = '恭喜完成挑戰！';
-                document.getElementById('completionMessage').innerHTML = '🎃 恭喜完成萬聖節挑戰！<br>請出示此畫面給櫃檯館員領取<br>【精美小禮 1 份或二手書 1 本】！';
-                document.getElementById('certificateText').textContent = `${currentUser} - 魔法學徒勳章 (${new Date().toLocaleDateString('zh-TW')})`;
-            }
-
-            document.getElementById('passwordModal').classList.remove('show');
-        }
-
-        // ========== 打開館員確認 Modal ==========
-        function openStaffConfirm() {
-            passwordModalMode = 'claim';
-            passwordModalCallback = () => {
-                saveData(true);
-                document.getElementById('staffConfirmBtn').classList.add('hidden');
-                document.getElementById('claimedMessage').classList.remove('hidden');
-                closePasswordModal();
-            };
-
-            document.getElementById('modalTitle').textContent = '館員確認發放禮物';
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('passwordInput').focus();
-            document.getElementById('passwordError').textContent = '';
-            
-            document.getElementById('passwordModal').classList.add('show');
-        }
-
-        // ========== 驗證密碼 ==========
-        function verifyPassword() {
-            const password = document.getElementById('passwordInput').value;
-            if (password === '8888') {
-                document.getElementById('passwordError').textContent = '';
-                if (passwordModalCallback) {
-                    passwordModalCallback();
-                }
-            } else {
-                document.getElementById('passwordError').textContent = '❌ 密碼錯誤，請重試';
-                document.getElementById('passwordInput').value = '';
-                document.getElementById('passwordInput').focus();
-            }
-        }
-
-        // ========== 關閉 Modal ==========
-        function closePasswordModal() {
-            document.getElementById('passwordModal').classList.remove('show');
-            document.getElementById('passwordInput').value = '';
-            passwordModalCallback = null;
-        }
-
-        // ========== 顯示領獎鎖定頁面 ==========
-        function showCompletionPage() {
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('mainSystem').classList.add('hidden');
-            document.getElementById('completionPage').classList.remove('hidden');
-            
-            document.getElementById('passwordModal').classList.remove('show');
-
-            const tasksCompleted = Object.values(userTasks).filter(v => v).length;
-            
-            if (tasksCompleted >= 2) {
-                document.getElementById('completionEmoji').textContent = '🎉';
-                document.getElementById('completionTitle').textContent = '特級魔法師！';
-                document.getElementById('completionMessage').innerHTML = `${currentUser}，感謝您完成南港分館萬聖節活動挑戰！`;
-                document.getElementById('certificateText').textContent = `已於 ${new Date().toLocaleDateString('zh-TW')} 完成領獎`;
-            } else {
-                document.getElementById('completionEmoji').textContent = '🎉';
-                document.getElementById('completionTitle').textContent = '挑戰完成！';
-                document.getElementById('completionMessage').innerHTML = `${currentUser}，感謝您完成南港分館萬聖節活動挑戰！`;
-                document.getElementById('certificateText').textContent = `已於 ${new Date().toLocaleDateString('zh-TW')} 完成領獎`;
-            }
-
-            document.getElementById('staffConfirmBtn').classList.add('hidden');
-            document.getElementById('claimedMessage').classList.remove('hidden');
-        }
-
-        // ========== 頁面載入時初始化 ==========
-        window.addEventListener('DOMContentLoaded', function() {
-            init();
-        });
-
-        // ========== 回車鍵提交密碼 ==========
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                if (document.getElementById('passwordModal').classList.contains('show')) {
-                    verifyPassword();
-                }
+                showMainApp();
             }
         });
     </script>
