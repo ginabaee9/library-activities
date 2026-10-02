@@ -748,6 +748,9 @@
     </div>
 
     <script>
+        // ============ Google 試算表 API 設定 ============
+        const STATS_API_URL = "https://script.google.com/macros/s/AKfycbxw3RlS67EbkZmP232qxATOrmoRFavt8fYzpZi97p_c-zmxVIL8pZH8L2y-ipjYAS31/exec";
+
         // ============ 資料庫定義 ============
         const QUIZ_DATABASE = [
             { question: "個人證一次最多可以借幾本書？", options: ["15本", "20本", "25本"], answer: 2 },
@@ -809,6 +812,37 @@
         };
 
         const PASSWORD = "5232";
+
+        // ============ Google 試算表資料回傳函數 ============
+        function sendStatsData(eventType) {
+            const quizCount = appState.quizCompleted.filter(q => q).length;
+            const taskCount = appState.tasksCompleted.filter(t => t).length;
+            
+            const payload = {
+                eventType: eventType,
+                nickname: appState.nickname,
+                monster: appState.selectedMonster.monster,
+                quizCount: quizCount,
+                actionCount: taskCount,
+                claimStatus: 
+                    appState.claimedCount === 0 ? "未領獎" :
+                    appState.claimedCount === 1 ? "已領取 1 份" :
+                    "已領取全部 2 份"
+            };
+
+            // 背景非同步 fetch，不干擾使用者介面
+            fetch(STATS_API_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            }).catch(err => {
+                // 靜音處理，網路錯誤不影響前端流程
+                console.log('Stats data sent (background)');
+            });
+        }
 
         // ============ 工具函數 ============
         function saveToStorage() {
@@ -909,6 +943,10 @@
                 appState.tasksCompleted = new Array(10).fill(false);
                 appState.claimedCount = 0;
                 saveToStorage();
+                
+                // 【觸發時機 A】首次登入時回傳資料
+                sendStatsData("登入挑戰");
+                
                 showMainApp();
             }
         }
@@ -1167,19 +1205,25 @@
 
                 if (appState.claimedCount === 0) {
                     if (taskCount >= 3) {
+                        // 【觸發時機 C】一次達成直接領取 2 份
                         appState.claimedCount = 2;
                         saveToStorage();
+                        sendStatsData("領取第2份禮品");
                         closeRewardModal();
                         showRewardCompletedPage();
                     } else {
+                        // 【觸發時機 B】領取第 1 份
                         appState.claimedCount = 1;
                         saveToStorage();
+                        sendStatsData("領取第1份禮品");
                         closeRewardModal();
                         showFirstRewardSuccess();
                     }
                 } else if (appState.claimedCount === 1) {
+                    // 【觸發時機 C】領取第 2 份
                     appState.claimedCount = 2;
                     saveToStorage();
+                    sendStatsData("領取第2份禮品");
                     closeRewardModal();
                     showRewardCompletedPage();
                 }
